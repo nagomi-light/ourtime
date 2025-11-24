@@ -1,0 +1,5 @@
+services:
+  ourtime_web:
+    command: >
+      /usr/local/bin/wait-for-it ourtime_db:5432 --timeout=30 --strict -- 
+      bundle exec rails s -b 0.0.0.0 -p 3000

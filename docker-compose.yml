@@ -1,0 +1,32 @@
+services:
+  ourtime_db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ourtime_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  ourtime_web:
+    build: .
+    command: >
+      bash -c "rm -f /app/tmp/pids/server.pid &&
+      /usr/local/bin/wait-for-it ourtime_db:5432 --timeout=30 --strict -- \
+      bundle exec rails s -b 0.0.0.0 -p 3000"
+    volumes:
+      - ./src:/app
+      - bundle:/usr/local/bundle 
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ourtime_db
+    environment:
+      DB_HOST: ourtime_db
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_NAME: ourtime_db
+      DB_PORT: 5432
+
+volumes:
+  db_data:
+  bundle: 

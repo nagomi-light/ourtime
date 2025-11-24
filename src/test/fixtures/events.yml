@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  team: one
+  title: MyString
+  description: MyText
+  start_time: 2025-11-23 05:46:22
+  end_time: 2025-11-23 05:46:22
+  repeat_rule: MyText
+
+two:
+  user: two
+  team: two
+  title: MyString
+  description: MyText
+  start_time: 2025-11-23 05:46:22
+  end_time: 2025-11-23 05:46:22
+  repeat_rule: MyText
