@@ -33,3 +33,6 @@ RUN chmod 755 /usr/local/bin/wait-for-it
 
 # appuserに戻す
 USER appuser
+
+# サーバー起動
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
