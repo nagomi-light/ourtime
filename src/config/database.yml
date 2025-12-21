@@ -26,3 +26,5 @@ production:
     url: <%= ENV.fetch("DATABASE_URL") %>
   queue:
     url: <%= ENV.fetch("DATABASE_URL") %>
+  cache:
+    url: <%= ENV.fetch("DATABASE_URL") %>
