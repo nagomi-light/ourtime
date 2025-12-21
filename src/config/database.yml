@@ -20,4 +20,7 @@ test:
   port: 5432
 
 production:
-  url: <%= ENV["DATABASE_URL"] %>
+  primary:
+    url: <%= ENV.fetch("DATABASE_URL") %>
+  cable:
+    url: <%= ENV.fetch("DATABASE_URL") %>
