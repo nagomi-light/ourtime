@@ -5,19 +5,19 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") %>_development
-  host: <%= ENV.fetch("DB_HOST") %>
-  username: <%= ENV.fetch("DB_USER") %>
-  password: <%= ENV.fetch("DB_PASSWORD") %>
-  port: <%= ENV.fetch("DB_PORT") %>
+  database: ourtime_development
+  host: localhost
+  username: postgres
+  password: password
+  port: 5432
 
 test:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") %>_test
-  host: <%= ENV.fetch("DB_HOST") %>
-  username: <%= ENV.fetch("DB_USER") %>
-  password: <%= ENV.fetch("DB_PASSWORD") %>
-  port: <%= ENV.fetch("DB_PORT") %>
+  database: ourtime_test
+  host: localhost
+  username: postgres
+  password: password
+  port: 5432
 
 production:
   url: <%= ENV["DATABASE_URL"] %>
