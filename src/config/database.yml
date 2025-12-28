@@ -5,8 +5,8 @@ default: &default
 
 development:
   <<: *default
-  database: ourtime_development
-  host: localhost
+  database: ourtime_db_development
+  host: ourtime_db
   username: postgres
   password: password
   port: 5432
@@ -14,7 +14,7 @@ development:
 test:
   <<: *default
   database: ourtime_test
-  host: localhost
+  host: ourtime_db
   username: postgres
   password: password
   port: 5432
