@@ -18,6 +18,8 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
+# 認証機能の実装
+gem "devise"
 
 # 繰り返し予定の実装
 gem 'ice_cube'
