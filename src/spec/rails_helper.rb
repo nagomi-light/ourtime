@@ -72,4 +72,6 @@ RSpec.configure do |config|
   
   # Factory_botの利用時、クラス名の指定を省略できるようにする
   config.include FactoryBot::Syntax::Methods
+  # Deviseのテスト用
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
