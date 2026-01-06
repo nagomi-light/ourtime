@@ -32,12 +32,44 @@ RSpec.describe "Events", type: :request do
   #   end
   # end
 
-  # describe "GET /create" do
-  #   it "returns http success" do
-  #     get "/events/create"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "POST /events" do
+    let(:user) { create(:user) }
+    let(:params) do
+      {
+        event: {
+          title: "会議",
+          description: "新商材についての会議"
+        }
+      }
+    end
+
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        post events_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "ログインしている場合" do
+      before do
+        sign_in user
+      end
+
+      it "予定を作成できる" do
+        expect {
+          post events_path, params: params
+        }.to change(Event, :count).by(1)
+      end
+      it "予定の作成者がログインユーザーになっている" do
+        post events_path, params: params
+        expect(Event.last.user).eq(user)
+      end
+      it "予定を作成後、予定一覧ページに遷移する" do
+      post events_path, params: params
+      expect(response).to redirect_to(events_path)
+      end
+    end
+  end
 
   # describe "GET /edit" do
   #   it "returns http success" do
