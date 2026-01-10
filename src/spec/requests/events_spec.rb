@@ -34,11 +34,22 @@ RSpec.describe "Events", type: :request do
 
   describe "POST /events" do
     let(:user) { create(:user) }
-    let(:params) do
+    let(:team) { create(:team) }
+    let(:user_event_params) do
       {
         event: {
           title: "会議",
-          description: "新商材についての会議"
+          description: "新商材についての会議",
+          team_id: nil
+        }
+      }
+    end
+    let(:team_event_params) do
+      {
+        event: {
+          title: "会議",
+          description: "新商材についての会議",
+          team_id: team.id
         }
       }
     end
@@ -55,17 +66,22 @@ RSpec.describe "Events", type: :request do
         sign_in user
       end
 
-      it "予定を作成できる" do
+      it "個人の予定を作成できる" do
         expect {
-          post events_path, params: params
+          post events_path, params: user_event_params
+        }.to change(Event, :count).by(1)
+      end
+      it "チームの予定を作成できる" do
+        expect {
+          post events_path, params: team_event_params
         }.to change(Event, :count).by(1)
       end
       it "予定の作成者がログインユーザーになっている" do
-        post events_path, params: params
-        expect(Event.last.user).eq(user)
+        post events_path, params: user_event_params
+        expect(Event.last.user).to eq(user)
       end
       it "予定を作成後、予定一覧ページに遷移する" do
-      post events_path, params: params
+      post events_path, params: user_event_params
       expect(response).to redirect_to(events_path)
       end
     end
