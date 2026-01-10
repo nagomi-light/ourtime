@@ -10,8 +10,10 @@ RSpec.describe "Events", type: :request do
     end
     context "ログインしている場合" do
       let(:user) { create(:user) }
-      it "トップページにアクセスできる" do
+      before do
         sign_in user
+      end
+      it "トップページにアクセスできる" do
         get root_path
         expect(response).to have_http_status(:ok)
       end
@@ -25,12 +27,24 @@ RSpec.describe "Events", type: :request do
   #   end
   # end
 
-  # describe "GET /new" do
-  #   it "returns http success" do
-  #     get "/events/new"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET /new" do
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        get new_event_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+    context "ログインしている場合" do
+      let(:user) { create(:user) }
+      before do
+        sign_in user
+      end
+      it "予定の新規登録画面にアクセスできる" do
+        get new_event_path
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 
   describe "POST /events" do
     let(:user) { create(:user) }
