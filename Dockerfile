@@ -35,4 +35,4 @@ RUN chmod 755 /usr/local/bin/wait-for-it
 USER appuser
 
 # サーバー起動
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+CMD ["bash", "-c", "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3000"]
