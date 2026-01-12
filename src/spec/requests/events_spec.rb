@@ -10,12 +10,27 @@ RSpec.describe "Events", type: :request do
     end
     context "ログインしている場合" do
       let(:user) { create(:user) }
+      let(:event_params) do
+        {
+          event: {
+            title: "自分が作成した予定",
+            description: "新商材についての会議",
+            start_time: Time.now,
+            end_time: 1.hour.ago
+          }
+        }
+      end
       before do
         sign_in user
       end
       it "トップページにアクセスできる" do
         get root_path
         expect(response).to have_http_status(:ok)
+      end
+      it "自分が作成した予定が表示される" do
+        post events_path, params: event_params
+        get root_path
+        expect(response.body).to include("自分が作成した予定")
       end
     end
   end

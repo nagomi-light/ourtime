@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   def index
-
+    # 自分が作成した予定の一覧を表示(今後、所属チームの予定の表示についても調整予定)
+    @events = current_user.events
   end
 
   def show
