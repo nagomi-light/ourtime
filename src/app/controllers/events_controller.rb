@@ -1,16 +1,24 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
   def index
-
+    # 自分が作成した予定の一覧を表示(今後、所属チームの予定の表示についても調整予定)
+    @events = current_user.events
   end
 
   def show
   end
 
   def new
+    @event = Event.new
   end
 
   def create
+    @event = current_user.events.new(event_params)
+    if @event.save
+      redirect_to events_path
+    else
+      render :new, status: unprocessable-entity
+    end
   end
 
   def edit
@@ -21,4 +29,17 @@ class EventsController < ApplicationController
 
   def destroy
   end
+
+  private
+
+  def event_params
+    params.require(:event).permit(
+      :title, 
+      :description,
+      :start_time,
+      :end_time,
+      :team_id
+    )
+  end
+
 end

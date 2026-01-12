@@ -1,4 +1,10 @@
 <div>
-  <h1 class="font-bold text-4xl">スケジュール</h1>
-  <p>カレンダー</p>
+  <h1 class="font-bold text-4xl">予定一覧</h1>
+
+  <% @events.each do |event| %>
+    <p><%= event.title %></p>
+  <% end %>
+  <nav>
+    <%= link_to "新規予定の作成", new_event_path, class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+  </nav>
 </div>
