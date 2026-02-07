@@ -3,6 +3,20 @@ class EventsController < ApplicationController
   def index
     # 自分が作成した予定の一覧を表示(今後、所属チームの予定の表示についても調整予定)
     @events = current_user.events
+    # fullcalendarに対応
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @events.map { |e|
+          {
+            id: e.id,
+            title: e.title,
+            start: e.start_time.iso8601,
+            end: e.end_time&.iso8601
+          }
+        }
+      end
+    end
   end
 
   def show
@@ -17,7 +31,7 @@ class EventsController < ApplicationController
     if @event.save
       redirect_to events_path
     else
-      render :new, status: unprocessable-entity
+      render :new, status: unprocessable_entity
     end
   end
 

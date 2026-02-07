@@ -1,10 +1,18 @@
-<div>
-  <h1 class="font-bold text-4xl">予定一覧</h1>
+<div class="max-w-6xl mx-auto px-4 py-6">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="font-bold text-4xl">予定一覧</h1>
 
-  <% @events.each do |event| %>
-    <p><%= event.title %></p>
-  <% end %>
-  <nav>
-    <%= link_to "新規予定の作成", new_event_path, class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
-  </nav>
+    <%= link_to "新規予定の作成",
+      new_event_path,
+      class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+    %>
+  </div>
+
+  <div
+    data-controller="calendar"
+    data-turbo="false"
+    class="bg-white rounded-lg shadow p-4"
+  ></div>
+
 </div>
+
