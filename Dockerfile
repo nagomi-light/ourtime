@@ -2,7 +2,8 @@ FROM ruby:3.4
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get update -qq && \
-    apt-get install -y build-essential libpq-dev nodejs curl && \
+    apt-get install -y build-essential libpq-dev nodejs curl git && \
+    npm install -g yarn esbuild && \
     rm -rf /var/lib/apt/lists/*
 
 # アプリユーザー作成
@@ -35,4 +36,4 @@ RUN chmod 755 /usr/local/bin/wait-for-it
 USER appuser
 
 # サーバー起動
-CMD ["bash", "-c", "bundle exec rails db:prepare && bundle exec rails server -b 0.0.0.0 -p 3000"]
+CMD ["bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
