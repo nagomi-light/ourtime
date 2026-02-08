@@ -29,8 +29,11 @@ RSpec.describe "Events", type: :request do
       end
       it "自分が作成した予定が表示される" do
         post events_path, params: event_params
-        get root_path
-        expect(response.body).to include("自分が作成した予定")
+        get root_path(format: :json)
+        json = JSON.parse(response.body)
+
+        titles = json.map { |e| e["title"] }
+        expect(titles).to include("自分が作成した予定")
       end
     end
   end
