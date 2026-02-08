@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@import "@fullcalendar/core/index.css";
+@import "@fullcalendar/daygrid/index.css";
+
 /* FullCalendar用の設定 */
 
 .fc {
