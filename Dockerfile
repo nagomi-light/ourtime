@@ -27,11 +27,8 @@ RUN bundle install
 # ソースコードをコピー（rootではなくappuserでコピー）
 COPY --chown=appuser:appuser ./src /app
 
-# JS ビルド
+# JS / CSS / Tailwind / FullCalendar ビルド
 RUN yarn install --frozen-lockfile
-RUN yarn build
-
-# assets を precompile（Tailwind 生成）
 RUN bundle exec rails assets:precompile
 
 # wait-for-it を追加して DB が立ち上がるまで待機
