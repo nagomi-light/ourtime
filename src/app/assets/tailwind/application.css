@@ -20,9 +20,3 @@
   background-color: #1e40af; /* blue-800 */
 }
 
-.fc,
-.fc-view-harness,
-.fc-scroller,
-.fc-scroller-liquid-absolute {
-  height: 100% !important;
-}
