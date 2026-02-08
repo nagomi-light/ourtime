@@ -27,6 +27,9 @@ RUN bundle install
 # ソースコードをコピー（rootではなくappuserでコピー）
 COPY --chown=appuser:appuser ./src /app
 
+# assets を precompile（Tailwind 生成）
+RUN bundle exec rails assets:precompile
+
 # wait-for-it を追加して DB が立ち上がるまで待機
 USER root
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for-it
