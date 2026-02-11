@@ -38,12 +38,29 @@ RSpec.describe "Events", type: :request do
     end
   end
 
-  # describe "GET /show" do
-  #   it "returns http success" do
-  #     get "/events/show"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET /show" do
+    let(:user) { create(:user) }
+    let(:event) { create(:event, title: "最初の予定", user: user) }
+
+
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        get event_path(event)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "ログインしている場合" do
+      before do
+        sign_in user
+      end
+      it "予定の詳細画面にアクセスできる" do
+        get event_path(event)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("最初の予定")
+      end
+    end
+  end
 
   describe "GET /new" do
     context "ログインしていない場合" do

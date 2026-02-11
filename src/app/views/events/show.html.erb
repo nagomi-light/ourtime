@@ -1,4 +1,13 @@
-<div>
-  <h1 class="font-bold text-4xl">Events#show</h1>
-  <p>Find me in app/views/events/show.html.erb</p>
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <div class="p-6">
+    <h1 class="font-bold text-4xl">予定の詳細</h1>
+    <h2>タイトル <%= @event.title %></h2>
+    <p>説明 <%= @event.description %></p>
+    <p>開始時刻 <%= @event.start_time %></p>
+    <p>終了時刻 <%= @event.end_time %></p>
+  </div>
+  
+  <nav>
+    <%= link_to "予定表に戻る", events_path, class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+  </nav>
 </div>
