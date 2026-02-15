@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="turbo-cache-control" content="no-cache">
-    <meta name="turbo-visit-control" content="reload">
+    <!-- <meta name="turbo-visit-control" content="reload"> -->
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -30,6 +30,11 @@
 
   <body>
     <main class="container mx-auto mt-28 px-5">
+      <% if flash[:notice] %>
+        <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

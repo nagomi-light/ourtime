@@ -31,9 +31,9 @@ class EventsController < ApplicationController
   def create
     @event = current_user.events.new(event_params)
     if @event.save
-      redirect_to events_path
+      redirect_to events_path, notice: "予定を作成しました"
     else
-      render :new, status: unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -43,6 +43,13 @@ class EventsController < ApplicationController
   end
 
   def update
+    # 自分が作成した予定のみ更新できる(同じチームでも更新不可)
+    @event = current_user.events.find(params[:id])
+    if @event.update(event_params)
+      redirect_to events_path, notice: "予定を更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy

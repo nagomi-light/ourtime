@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@source "../../../app/views/**/*.{erb,html}";
+@source "../../../app/helpers/**/*.rb";
+@source "../../../app/javascript/**/*.js";
+
 /* FullCalendar用の設定 */
 
 .fc {

@@ -141,8 +141,7 @@ RSpec.describe "Events", type: :request do
     let(:user_b) { create(:user) }
     let(:event_a) { create(:event, title: "ユーザーAの予定", user: user_a) }
     let(:event_b) { create(:event, title: "ユーザーBの予定", user: user_b) }
-
-
+    
     context "ログインしていない場合" do
       it "ログインページにリダイレクトされる" do
         get edit_event_path(event_a)
@@ -169,12 +168,48 @@ RSpec.describe "Events", type: :request do
     end
   end
 
-  # describe "GET /update" do
-  #   it "returns http success" do
-  #     get "/events/update"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET /update" do
+    let(:user_a) { create(:user) }
+    let(:user_b) { create(:user) }
+    let(:event_a) { create(:event, title: "ユーザーAの予定", user: user_a) }
+    let(:event_b) { create(:event, title: "ユーザーBの予定", user: user_b) }
+    let(:event_params_update) do
+      {
+        event: {
+          title: "変更後の予定"
+        }
+      }
+    end
+
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        patch event_path(event_a)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "ユーザーAがログインしている場合" do
+      before do
+        sign_in user_a
+      end
+      it "ユーザーA(本人)の予定を更新できる" do
+        patch event_path(event_a), params: event_params_update
+        expect(user_a.events.last.title).to eq("変更後の予定")
+      end
+      it "予定を更新後、予定一覧ページに遷移する" do
+        patch event_path(event_a), params: event_params_update
+        expect(response).to redirect_to(events_path)
+      end
+      
+      # 今後下記テストも実装予定
+
+      # it "ユーザーB（別ユーザー）の予定は更新できない" do
+      #   patch event_path(event_b), params: event_params_update
+      #   expect(user_b.events.last.title).to eq("ユーザーBの予定")
+      # end
+
+    end
+  end
 
   # describe "GET /destroy" do
   #   it "returns http success" do
