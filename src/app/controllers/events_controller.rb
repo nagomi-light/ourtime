@@ -53,6 +53,10 @@ class EventsController < ApplicationController
   end
 
   def destroy
+    # 自分が作成した予定のみ削除できる(同じチームでも削除不可)
+    event = current_user.events.find(params[:id])
+    event.destroy
+    redirect_to events_path, notice: "予定を削除しました"
   end
 
   private
