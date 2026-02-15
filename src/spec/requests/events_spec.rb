@@ -136,12 +136,38 @@ RSpec.describe "Events", type: :request do
     end
   end
 
-  # describe "GET /edit" do
-  #   it "returns http success" do
-  #     get "/events/edit"
-  #     expect(response).to have_http_status(:success)
-  #   end
-  # end
+  describe "GET /edit" do
+    let(:user_a) { create(:user) }
+    let(:user_b) { create(:user) }
+    let(:event_a) { create(:event, title: "ユーザーAの予定", user: user_a) }
+    let(:event_b) { create(:event, title: "ユーザーBの予定", user: user_b) }
+
+
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        get edit_event_path(event_a)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "ユーザーAがログインしている場合" do
+      before do
+        sign_in user_a
+      end
+      it "ユーザーA(本人)の予定の編集画面にアクセスできる" do
+        get edit_event_path(event_a)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("ユーザーAの予定")
+      end
+      # 今後下記テストも実装予定
+
+      # it "ユーザーB（別ユーザー）の予定の編集画面にアクセスできない" do
+      #   get edit_event_path(event_b)
+      #   expect(response.body).to raise_error(ActiveRecord::RecordNotFound)
+      # end
+
+    end
+  end
 
   # describe "GET /update" do
   #   it "returns http success" do

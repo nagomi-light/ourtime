@@ -20,7 +20,8 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find(params[:id])
+    # 自分が作成した予定のみ詳細を表示できる(今後、所属チームの予定の表示についても調整予定)
+    @event = current_user.events.find(params[:id])
   end
 
   def new
@@ -37,6 +38,8 @@ class EventsController < ApplicationController
   end
 
   def edit
+    # 自分が作成した予定のみ編集できる(同じチームでも編集不可)
+    @event = current_user.events.find(params[:id])
   end
 
   def update
