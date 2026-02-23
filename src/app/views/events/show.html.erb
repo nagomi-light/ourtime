@@ -1,19 +1,46 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-  <div class="p-6">
-    <h1 class="font-bold text-4xl">予定の詳細</h1>
-    <h2>タイトル <%= @event.title %></h2>
-    <p>説明 <%= @event.description %></p>
-    <p>開始時刻 <%= @event.start_time %></p>
-    <p>終了時刻 <%= @event.end_time %></p>
+  <div class="border-b border-gray-200 pb-4 mb-6">
+    <div class="flex justify-between items-end">
+      <h1 class="text-2xl font-bold">
+        <%= @event.title %>
+      </h1>
+
+      <div class="text-gray-900 text-sm whitespace-nowrap">
+        <%= @event.start_time.strftime("%Y/%m/%d %H:%M") %>
+        ～
+        <%= @event.end_time&.strftime("%Y/%m/%d %H:%M")  %>
+      </div>
+    </div>
   </div>
-  
-  <nav>
-    <%= link_to "予定表に戻る", events_path, class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
-  </nav>
-  <nav>
-    <%= link_to "編集する", edit_event_path, class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
-  </nav>
-  <nav>
-    <%= link_to "削除する", event_path, method: :delete, data: { confirm: "この予定を削除します。よろしいですか？" }, class: "bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600" %>
-  </nav>
+
+  <div class="mb-4">
+    <p class="block text-gray-700 font-medium mb-2">説明</p>
+    <div class="border border-gray-300 rounded px-3 py-2 whitespace-pre-wrap min-h-[100px]"><%= @event.description.presence %></div>
+  </div>
+
+  <div class="mb-6">
+    <p class="block text-gray-700 font-medium mb-2">チーム</p>
+    <div class="border border-gray-300 rounded px-3 py-2">
+      <%= @event.team&.name || "なし" %>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+    <div class="flex gap-4">
+      <%= link_to "編集",
+          edit_event_path(@event),
+          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+
+      <%= button_to "削除",
+          event_path(@event),
+          method: :delete,
+          data: { turbo_confirm: "本当に削除しますか？" },
+          class: "bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600" %>
+    </div>
+
+    <%= link_to "戻る",
+        events_path,
+        class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+  </div>
+
 </div>
