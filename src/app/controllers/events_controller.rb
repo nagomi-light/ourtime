@@ -20,6 +20,8 @@ class EventsController < ApplicationController
   end
 
   def show
+    # 自分が作成した予定のみ詳細を表示できる(今後、所属チームの予定の表示についても調整予定)
+    @event = current_user.events.find(params[:id])
   end
 
   def new
@@ -29,19 +31,32 @@ class EventsController < ApplicationController
   def create
     @event = current_user.events.new(event_params)
     if @event.save
-      redirect_to events_path
+      redirect_to events_path, notice: "予定を作成しました"
     else
-      render :new, status: unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
+    # 自分が作成した予定のみ編集できる(同じチームでも編集不可)
+    @event = current_user.events.find(params[:id])
   end
 
   def update
+    # 自分が作成した予定のみ更新できる(同じチームでも更新不可)
+    @event = current_user.events.find(params[:id])
+    if @event.update(event_params)
+      redirect_to events_path, notice: "予定を更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
+    # 自分が作成した予定のみ削除できる(同じチームでも削除不可)
+    event = current_user.events.find(params[:id])
+    event.destroy
+    redirect_to events_path, notice: "予定を削除しました"
   end
 
   private
