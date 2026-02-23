@@ -35,3 +35,6 @@ src/config/master.key
 
 src/app/assets/builds/*
 !src/app/assets/builds/.keep
+
+# Node modules
+src/node_modules/
