@@ -1,0 +1,65 @@
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
+    <%= event.persisted? ? "予定の編集" : "予定の追加" %>
+  </h1>
+
+  <% if event.errors.any? %>
+    <div class="mb-4 bg-red-100 text-red-700 px-4 py-2 rounded">
+      <ul class="list-disc pl-5">
+        <% event.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: event, local: true do |f| %>
+
+    <div class="mb-4">
+      <%= f.label :title, "タイトル", class: "block text-gray-700 font-medium mb-2" %>
+      <%= f.text_field :title,
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :description, "説明", class: "block text-gray-700 font-medium mb-2" %>
+      <%= f.text_area :description, rows: 4,
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <%= f.label :start_time, "開始時間", class: "block text-gray-700 font-medium mb-2" %>
+        <%= f.datetime_local_field :start_time,
+              value: (@event.start_time || Time.current).strftime("%Y-%m-%dT%H:%M"),
+              class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+      </div>
+
+      <div>
+        <%= f.label :end_time, "終了時間", class: "block text-gray-700 font-medium mb-2" %>
+        <%= f.datetime_local_field :end_time,
+              value: (@event.end_time || Time.current + 1.hour).strftime("%Y-%m-%dT%H:%M"),
+              class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <%= f.label :team_id, "チーム", class: "block text-gray-700 font-medium mb-2" %>
+      <%= f.collection_select :team_id,
+            current_user.teams,
+            :id,
+            :name,
+            { include_blank: "なし" },
+            class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+    </div>
+
+    <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
+      <%= f.submit event.persisted? ? "更新" : "作成",
+          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+
+      <%= link_to "キャンセル", events_path,
+          class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+    </div>
+
+  <% end %>
+</div>
