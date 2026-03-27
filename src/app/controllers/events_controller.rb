@@ -7,6 +7,9 @@ class EventsController < ApplicationController
     # 自分が作成した予定の一覧を表示
     # @events = current_user.events
 
+    # 所属チームを表示
+    @teams = current_user.teams
+
     # 自分の予定と所属チームの予定を表示
     @events = Event.where(user_id: current_user.id)
              .or(Event.where(team_id: current_user.team_ids))
@@ -21,7 +24,9 @@ class EventsController < ApplicationController
             id: e.id,
             title: e.title,
             start: e.start_time.iso8601,
-            end: e.end_time&.iso8601
+            end: e.end_time&.iso8601,
+            team_id: e.team_id,
+            user_id: e.user_id
           }
         }
       end

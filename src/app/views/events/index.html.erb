@@ -1,18 +1,83 @@
 <div class="max-w-6xl mx-auto px-4 py-6">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="font-bold text-4xl">予定一覧</h1>
+  <div class="flex gap-6">
 
-    <%= link_to "新規予定の作成",
-      new_event_path,
-      class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
-    %>
+    <!-- サイドバー -->
+    <aside 
+      data-controller="sidebar" 
+      class="w-64 bg-gray-50 rounded-lg p-4 shadow">
+      <h3 class="text-lg font-semibold mb-4">
+        チーム
+      </h3>
+
+      <% @teams.each do |team| %>
+        <div class="mb-4">
+          <div class="flex items-center justify-between">
+            
+            <label class="flex items-center gap-2">
+              <!-- 展開ボタン -->
+              <button
+                type="button"
+                data-team-id="<%= team.id %>"
+                data-action="click->sidebar#toggleMembers"
+                class="text-gray-500 hover:text-black"
+              >
+              ▸
+              </button>
+              <span class="font-medium text-gray-800">
+                <%= team.name %>
+              </span>
+              <!-- チェックボックス -->
+              <input
+                type="checkbox"
+                class="team-toggle"
+                data-action="change->sidebar#toggleTeam"
+                value="<%= team.id %>"
+                checked
+              >
+            </label>
+          </div>
+          
+          <!-- チームメンバー(展開ボタンをクリックすると表示) -->
+          <ul 
+            id="team-members-<%= team.id %>"
+            class="ml-4 mt-2 text-sm text-gray-600 space-y-1 hidden">
+            <% team.users.each do |user| %>
+              <li>
+                <label class="flex items-center gap-2 text-base font-semibold text-gray-800 pl-2">
+                  <%= user.name %>
+                  <input
+                    type="checkbox"
+                    class="user-toggle"
+                    data-action="change->sidebar#triggerFilter"
+                    value="<%= user.id %>"
+                    checked
+                  >                 
+                </label>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </aside>
+
+
+    <!-- メイン -->
+    <main class="flex-1">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="font-bold text-4xl">予定一覧</h1>
+
+        <%= link_to "新規予定の作成",
+            new_event_path,
+            class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+        %>
+      </div>
+
+      <div
+        data-controller="calendar" 
+        data-action="sidebar:filter@window->calendar#filter"
+        data-turbo="false"
+        class="bg-white rounded-lg shadow p-4"
+      ></div>
+    </main>
   </div>
-
-  <div
-    data-controller="calendar"
-    data-turbo="false"
-    class="bg-white rounded-lg shadow p-4"
-  ></div>
-
 </div>
-
