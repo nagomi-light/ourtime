@@ -14,13 +14,25 @@ export default class extends Controller {
       initialView: "dayGridMonth",
       locale: "ja",
       events: this.fetchEvents.bind(this),
-      height: 700,
-      expandRows: true,
-      fixedWeekCount: false,
-      dayMaxEventRows: true
+      height: "auto", 
+      expandRows: false,   
+      fixedWeekCount: false, 
+      dayMaxEventRows: 3
     })
 
-    this.calendar.render()
+    this.calendar.render() 
+
+    requestAnimationFrame(() => this.applyRowHeight())
+
+    this.calendar.on('datesSet', () => {
+      requestAnimationFrame(() => this.applyRowHeight())
+    })
+  }
+
+  applyRowHeight() {
+    this.element.querySelectorAll('.fc-daygrid-body tr').forEach(tr => {
+       tr.style.height = '120px'
+    })
   }
 
   filter(event) {
