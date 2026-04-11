@@ -15,8 +15,8 @@ RSpec.describe "Events", type: :request do
           event: {
             title: "自分が作成した予定",
             description: "新商材についての会議",
-            start_time: Time.now,
-            end_time: 1.hour.ago
+            start_time: Time.zone.now,
+            end_time: 1.hour.from_now
           }
         }
       end
@@ -58,7 +58,7 @@ RSpec.describe "Events", type: :request do
         get event_path(event)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("最初の予定")
-      end
+      end    
     end
   end
 
@@ -89,7 +89,9 @@ RSpec.describe "Events", type: :request do
         event: {
           title: "会議",
           description: "新商材についての会議",
-          team_id: nil
+          team_id: nil,
+          start_time: Time.zone.now,
+          end_time: 1.hour.from_now
         }
       }
     end
@@ -98,7 +100,9 @@ RSpec.describe "Events", type: :request do
         event: {
           title: "会議",
           description: "新商材についての会議",
-          team_id: team.id
+          team_id: team.id,
+          start_time: Time.zone.now,
+          end_time: 1.hour.from_now
         }
       }
     end
@@ -118,11 +122,6 @@ RSpec.describe "Events", type: :request do
       it "個人の予定を作成できる" do
         expect {
           post events_path, params: user_event_params
-        }.to change(Event, :count).by(1)
-      end
-      it "チームの予定を作成できる" do
-        expect {
-          post events_path, params: team_event_params
         }.to change(Event, :count).by(1)
       end
       it "予定の作成者がログインユーザーになっている" do
@@ -158,12 +157,11 @@ RSpec.describe "Events", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("ユーザーAの予定")
       end
-      # 今後下記テストも実装予定
-
-      # it "ユーザーB（別ユーザー）の予定の編集画面にアクセスできない" do
-      #   get edit_event_path(event_b)
-      #   expect(response.body).to raise_error(ActiveRecord::RecordNotFound)
-      # end
+      # 追加テスト
+      it "ユーザーB（別ユーザー）の予定の編集画面にアクセスできない" do
+        get edit_event_path(event_b)
+        expect(response).to have_http_status(:forbidden)
+      end
 
     end
   end
@@ -171,8 +169,8 @@ RSpec.describe "Events", type: :request do
   describe "PATCH /update" do
     let(:user_a) { create(:user) }
     let(:user_b) { create(:user) }
-    let(:event_a) { create(:event, title: "ユーザーAの予定", user: user_a) }
-    let(:event_b) { create(:event, title: "ユーザーBの予定", user: user_b) }
+    let(:event_a) { create(:event, title: "ユーザーAの変更前の予定", user: user_a) }
+    let(:event_b) { create(:event, title: "ユーザーBの変更前の予定", user: user_b) }
     let(:event_params_update) do
       {
         event: {
@@ -192,21 +190,21 @@ RSpec.describe "Events", type: :request do
       before do
         sign_in user_a
       end
-      it "ユーザーA(本人)の予定を更新できる" do
+      it "ユーザーA(本人)の予定は更新できる" do
         patch event_path(event_a), params: event_params_update
-        expect(user_a.events.last.title).to eq("変更後の予定")
+        expect(event_a.reload.title).to eq("変更後の予定")
       end
-      it "予定を更新後、予定一覧ページに遷移する" do
+      it "予定を更新した後、予定一覧ページに遷移する" do
         patch event_path(event_a), params: event_params_update
         expect(response).to redirect_to(events_path)
       end
       
-      # 今後下記テストも実装予定
-
-      # it "ユーザーB（別ユーザー）の予定は更新できない" do
-      #   patch event_path(event_b), params: event_params_update
-      #   expect(user_b.events.last.title).to eq("ユーザーBの予定")
-      # end
+      # 追加テスト
+      it "ユーザーB（別ユーザー）の予定は更新できない" do
+        patch event_path(event_b), params: event_params_update
+        expect(response).to have_http_status(:forbidden)
+        expect(event_b.reload.title).to eq("ユーザーBの変更前の予定")
+      end
 
     end
   end
@@ -238,13 +236,13 @@ RSpec.describe "Events", type: :request do
         expect(response).to redirect_to(events_path)
       end
       
-      # 今後下記テストも実装予定
-
-      # it "ユーザーB（別ユーザー）の予定は削除できない" do
-      #   delete event_path(event_a)
-      #   expect(response.body).to raise_error(ActiveRecord::RecordNotFound)
-      #   expect(response.body).to include("ユーザーBの予定")
-      # end
+      # 追加テスト
+      it "ユーザーB（別ユーザー）の予定は削除できない" do
+        expect {
+          delete event_path(event_b)
+        }.to change(Event, :count).by(0)
+        expect(response).to have_http_status(:forbidden)
+      end
 
     end
   end

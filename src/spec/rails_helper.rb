@@ -43,7 +43,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
@@ -74,4 +74,46 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   # Deviseのテスト用
   config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
+  config.include Warden::Test::Helpers, type: :system
 end
+
+require 'database_cleaner/active_record'
+
+RSpec.configure do |config|
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+end
+
+Capybara.register_driver :selenium_chrome_headless do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+
+  options.add_argument("--headless=new")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  options.add_argument("--window-size=1400,1400")
+  options.add_argument("--disable-gpu")
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
+Capybara.javascript_driver = :selenium_chrome_headless
+
+Capybara.server = :puma, { Silent: true }
+Capybara.server_host = "0.0.0.0"
+Capybara.server_port = 3001
+Capybara.app_host = "http://127.0.0.1:3001"
+Capybara.default_max_wait_time = 5
