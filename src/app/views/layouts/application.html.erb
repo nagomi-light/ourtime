@@ -19,6 +19,11 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+
     <% unless Rails.env.test? %>
       <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
       <%= stylesheet_link_tag "fullcalendar/main", "data-turbo-track": "reload" %>
@@ -29,6 +34,29 @@
   </head>
 
   <body>
+    <header class="bg-sky-500 flex justify-between items-center px-6 py-3 shadow">
+  
+      <!-- 左：ロゴ -->
+      <div class="text-3xl text-white" style="font-family: 'Luckiest Guy', cursive;">
+        <%= link_to "OUR TIME", root_path, class: "hover:opacity-80 transition" %>
+      </div>
+
+      <!-- 右：ログイン・ログアウト -->
+      <% if user_signed_in? %>
+        <%= button_to "ログアウト",
+            destroy_user_session_path,
+            method: :delete,
+            form: { class: "inline" },
+            data: { turbo_confirm: "ログアウトしますか？" },
+            class: "bg-white text-sky-500 px-3 py-1 rounded hover:bg-gray-100 transition" %>
+      <% else %>
+        <%= link_to "ログイン",
+            new_user_session_path,
+            class: "text-white hover:opacity-80 transition" %>
+      <% end %>
+      
+    </header>
+
     <main class="container mx-auto mt-28 px-5">
       <% if flash[:notice] %>
         <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4">
