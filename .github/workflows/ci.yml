@@ -50,6 +50,26 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:migrate
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "yarn"
+          cache-dependency-path: src/yarn.lock
+      
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install JS dependencies
+        run: |
+          cd src
+          yarn install
+
+      - name: Build JS
+        run: |
+          cd src
+          yarn build
+
       - name: Run RSpec
         env:
           RAILS_ENV: test
