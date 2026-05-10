@@ -7,6 +7,7 @@ tanaka = User.find_or_create_by!(email: "tanaka@example.com") do |u|
   u.name = "田中"
   u.password = "password"
 end
+tanaka.update!(admin: true)
 
 sato = User.find_or_create_by!(email: "sato@example.com") do |u|
   u.name = "佐藤"
