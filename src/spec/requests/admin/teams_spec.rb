@@ -43,11 +43,39 @@ RSpec.describe "Admin::Teams", type: :request do
     end
   end
 
-  describe "GET /new" do
-    # it "returns http success" do
-    #   get "/admin/teams/new"
-    #   expect(response).to have_http_status(:success)
-    # end
+  describe "/admin/teams/new" do
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        get new_admin_team_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "一般ユーザーがログインしている場合" do
+      let(:user) do
+        create(:user, admin: false)
+      end
+      before do
+        sign_in user
+      end
+      it "ホーム画面にリダイレクトされる" do
+        get new_admin_team_path
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    context "管理者がログインしている場合" do
+      let(:admin) do
+        create(:user, admin: true)
+      end
+      before do
+        sign_in admin
+      end
+      it "新規チームの作成画面にアクセスできる" do
+        get new_admin_team_path
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
 
   describe "GET /create" do

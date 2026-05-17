@@ -1,4 +1,41 @@
-<div>
-  <h1 class="font-bold text-4xl">Admin::Teams#new</h1>
-  <p>Find me in app/views/admin/teams/new.html.erb</p>
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
+    新規チームの作成
+  </h1>
+
+  <%= form_with model: [:admin, @team], local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, "チーム名", class: "block text-gray-700 font-medium mb-2" %>
+      <%= f.text_field :name,
+          class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+    </div>
+
+    <div class="mb-6">
+      <p class="block text-gray-700 font-medium mb-2">
+        メンバー
+      </p>
+
+      <div class="space-y-2 max-h-64 overflow-y-auto border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500">
+        <% @users.each do |user| %>
+          <label class="flex items-center gap-2">
+            <%= check_box_tag "team[user_ids][]",
+                user.id,
+                false,
+                class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <span><%= user.name %>  <%= user.email %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
+      <%= f.submit "作成",
+          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+
+      <%= link_to "キャンセル", admin_teams_path,
+          class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+    </div>
+
+  <% end %>
 </div>
+

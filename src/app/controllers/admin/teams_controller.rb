@@ -5,10 +5,9 @@ class Admin::TeamsController < ApplicationController
     @teams = Team.all
   end
 
-  def show
-  end
-
   def new
+    @team = Team.new
+    @users = User.all
   end
 
   def create
