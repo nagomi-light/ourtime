@@ -11,6 +11,15 @@ class Admin::TeamsController < ApplicationController
   end
 
   def create
+    @team = Team.new(team_params)
+    @team.owner = current_user
+
+    if @team.save
+      redirect_to admin_teams_path, notice: "チームを作成しました"
+    else
+      @users = User.all
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -23,8 +32,18 @@ class Admin::TeamsController < ApplicationController
   end
 
   private
+
+  def team_params
+    params.require(:team).permit(
+      :name, 
+      user_ids: []
+    )
+  end
+
   # 管理者権限
   def authorize_admin!
     redirect_to root_path, alert: "権限がありません" unless current_user.admin?
   end
+
+  
 end
