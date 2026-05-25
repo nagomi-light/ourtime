@@ -5,12 +5,6 @@ Rails.application.routes.draw do
   resources :teams
   
   namespace :admin do
-    get "teams/index"
-    get "teams/show"
-    get "teams/new"
-    get "teams/create"
-    get "teams/edit"
-    get "teams/destroy"
     resources :users
     resources :teams
   end

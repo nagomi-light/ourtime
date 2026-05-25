@@ -231,7 +231,7 @@ RSpec.describe "Events", type: :request do
           delete event_path(event_a)
         }.to change(Event, :count).by(-1)
       end
-      it "予定を更新後、予定一覧ページに遷移する" do
+      it "予定を削除後、予定一覧ページに遷移する" do
         delete event_path(event_a)
         expect(response).to redirect_to(events_path)
       end
