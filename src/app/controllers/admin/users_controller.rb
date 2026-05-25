@@ -7,8 +7,8 @@ class Admin::UsersController < ApplicationController
   end
 
   def new
-    # @team = Team.new
-    # @users = User.all
+    @user = User.new
+    @teams = Team.all
   end
 
   def create
