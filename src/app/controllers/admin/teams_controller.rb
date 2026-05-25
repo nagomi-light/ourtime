@@ -37,6 +37,8 @@ class Admin::TeamsController < ApplicationController
   end
 
   def destroy
+    @team.destroy
+    redirect_to admin_teams_path, notice: "予定を削除しました"
   end
 
   private
