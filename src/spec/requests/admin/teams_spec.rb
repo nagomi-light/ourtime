@@ -209,7 +209,79 @@ RSpec.describe "Admin::Teams", type: :request do
   end
 
   describe "PATCH /admin/teams/:id/update" do
-    
+    let(:user_a) do
+      create(:user, admin: false)
+    end
+    let(:user_b) do
+      create(:user, admin: false)
+    end
+    let(:admin) do
+      create(:user, admin: true)
+    end
+    let!(:team) do
+      create(
+        :team,
+        name: "変更前のチーム名",
+        user_ids: [admin.id, user_b.id],
+        owner: admin
+      )
+    end
+    let(:team_params_update) do
+      {
+        team: {
+          name: "変更後のチーム名",
+          user_ids: [admin.id, user_a.id]
+        }
+      }
+    end
+
+    context "ログインしていない場合" do
+      it "チームは更新されず、ログインページにリダイレクトされる" do
+        patch admin_team_path(team), params: team_params_update
+        # チーム名の確認
+        expect(Team.last.name).to eq("変更前のチーム名")
+        # チームメンバーの確認
+        expect(Team.last.users).to include(admin)
+        expect(Team.last.users).not_to include(user_a)
+        expect(Team.last.users).to include(user_b)
+        # リダイレクトの確認
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "一般ユーザーがログインしている場合" do
+      before do
+        sign_in user_a
+      end
+      it "チームは更新されず、ホーム画面にリダイレクトされる" do
+        patch admin_team_path(team), params: team_params_update
+        # チーム名の確認
+        expect(Team.last.name).to eq("変更前のチーム名")
+        # チームメンバーの確認
+        expect(Team.last.users).to include(admin)
+        expect(Team.last.users).not_to include(user_a)
+        expect(Team.last.users).to include(user_b)
+        # リダイレクトの確認
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    context "管理者がログインしている場合" do
+      before do
+        sign_in admin
+      end
+      it "チームを更新した後、チーム管理ページに遷移する" do
+        patch admin_team_path(team), params: team_params_update
+        # チーム名の確認
+        expect(Team.last.name).to eq("変更後のチーム名")
+        # チームメンバーの確認
+        expect(Team.last.users).to include(admin)
+        expect(Team.last.users).to include(user_a)
+        expect(Team.last.users).not_to include(user_b)
+        # リダイレクトの確認
+        expect(response).to redirect_to(admin_teams_path)
+      end
+    end
   end
 
   describe "DELETE /admin/teams/:id/destroy" do

@@ -28,6 +28,12 @@ class Admin::TeamsController < ApplicationController
   end
 
   def update
+    if @team.update(team_params)
+      redirect_to admin_teams_path, notice: "チームを更新しました"
+    else
+      @users = User.all
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
