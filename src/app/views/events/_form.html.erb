@@ -6,7 +6,7 @@
   <% if event.errors.any? %>
     <div class="mb-4 bg-red-100 text-red-700 px-4 py-2 rounded">
       <ul class="list-disc pl-5">
-        <% event.errors.full_messages.each do |message| %>
+        <% @event.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
       </ul>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
-      <%= f.submit event.persisted? ? "更新" : "作成",
+      <%= f.submit @event.persisted? ? "更新" : "作成",
           class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
 
       <%= link_to "キャンセル", events_path,

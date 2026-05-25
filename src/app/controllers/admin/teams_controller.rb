@@ -1,6 +1,7 @@
 class Admin::TeamsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_admin!
+  before_action :set_team, only: [:edit, :update, :destroy]
   def index
     @teams = Team.all
   end
@@ -23,6 +24,7 @@ class Admin::TeamsController < ApplicationController
   end
 
   def edit
+    @users = User.all
   end
 
   def update
@@ -32,6 +34,10 @@ class Admin::TeamsController < ApplicationController
   end
 
   private
+
+  def set_team
+    @team = Team.find(params[:id])
+  end
 
   def team_params
     params.require(:team).permit(
