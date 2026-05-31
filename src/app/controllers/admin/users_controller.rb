@@ -11,19 +11,42 @@ class Admin::UsersController < ApplicationController
     @teams = Team.all
   end
 
-  def create
-    # @team = Team.new(team_params)
-    # @team.owner = current_user
+def create
+  @user = User.new(
+    name: user_params[:name],
+    email: user_params[:email]
+  )
 
-    # if @team.save
-    #   redirect_to admin_teams_path, notice: "チームを作成しました"
-    # else
-    #   @users = User.all
-    #   render :new, status: :unprocessable_entity
-    # end
+  @user.errors.add(:name, "ユーザー名を入力してください") if @user.name.blank?
+  @user.errors.add(:email, "メールアドレスを入力してください") if @user.email.blank?
+
+  if User.exists?(email: @user.email)
+    @user.errors.add(:email, "このメールアドレスのユーザーはすでに存在します")
   end
 
+  if @user.errors.empty?
+    invited_user = User.invite!(
+      name: user_params[:name],
+      email: user_params[:email]
+    )
+
+    invited_user.update(
+      admin: user_params[:admin],
+      team_ids: user_params[:team_ids]
+    )
+
+    redirect_to admin_users_path,
+                notice: "新規ユーザーを招待しました"
+  else
+    @teams = Team.all
+    render :new, status: :unprocessable_content
+  end
+end
+
   def edit
+
+
+    
     # @users = User.all
   end
 
@@ -43,16 +66,18 @@ class Admin::UsersController < ApplicationController
 
   private
 
-  def set_team
+  def set_user
     @user = User.find(params[:id])
   end
 
-  # def team_params
-  #   params.require(:team).permit(
-  #     :name, 
-  #     user_ids: []
-  #   )
-  # end
+  def user_params
+    params.require(:user).permit(
+      :name, 
+      :email,
+      :admin,
+      team_ids: []
+    )
+  end
 
   # 管理者権限
   def authorize_admin!

@@ -78,92 +78,114 @@ RSpec.describe "Admin::Users", type: :request do
     end
   end
 
-  # describe "POST /admin/users" do
-  #   context "ログインしていない場合" do
-  #     let(:user_params) do
-  #       {
-  #         user: {
-  #           name: "新規ユーザー"
-  #         }
-  #       }
-  #     end
-  #     it "新規ユーザーは作成されず、ログインページにリダイレクトされる" do
-  #       # ユーザー数の確認
-  #       expect {
-  #         post admin_users_path, params: user_params
-  #       }.not_to change(User, :count)
-  #       # リダイレクトの確認
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
-  #   end
+  describe "POST /admin/users" do
+    let(:user_params) do
+      {
+        user: {
+          name: "新規ユーザー",
+          email: "test@example.com",
+          admin: false
+        }
+      }
+    end
+    context "ログインしていない場合" do
+      it "新規ユーザーは招待できず、ログインページにリダイレクトされる" do
+        expect {
+          post admin_users_path, params: user_params
+        }.not_to change(User, :count)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
 
-  #   context "一般ユーザーがログインしている場合" do
-  #     let(:user) do
-  #       create(:user, admin: false)
-  #     end
-  #     let(:user_params) do
-  #       {
-  #         team: {
-  #           name: "新規チーム",
-  #           user_ids: [user.id]
-  #         }
-  #       }
-  #     end
-  #     before do
-  #       sign_in user
-  #     end
-  #     it "新規チームは作成されず、ホーム画面にリダイレクトされる" do
-  #       # チーム数の確認
-  #       expect {
-  #         post admin_teams_path, params: team_params
-  #       }.not_to change(Team, :count)
-  #       # リダイレクトの確認
-  #       expect(response).to redirect_to(root_path)
-  #     end
-  #   end
+    context "一般ユーザーがログインしている場合" do
+      let(:user) do
+        create(:user, admin: false)
+      end
+      before do
+        sign_in user
+      end
+      it "新規チームは作成できず、ホーム画面にリダイレクトされる" do
+        expect {
+          post admin_users_path, params: user_params
+        }.not_to change(User, :count)
+        expect(response).to redirect_to(root_path)
+      end
+    end
 
-  #   context "管理者がログインしている場合" do
-  #     let(:admin) do
-  #       create(:user, admin: true)
-  #     end
-  #     let(:user_a) do
-  #       create(:user, admin: false)
-  #     end
-  #     let(:user_b) do
-  #       create(:user, admin: false)
-  #     end
-  #     let(:team_params) do
-  #       {
-  #         team: {
-  #           name: "新規チーム",
-  #           user_ids: [admin.id, user_b.id]
-  #         }
-  #       }
-  #     end
-  #     before do
-  #       sign_in admin
-  #     end
-  #     it "新規チームを作成できる" do
-  #       # チーム数の確認
-  #       expect {
-  #         post admin_teams_path, params: team_params
-  #       }.to change(Team, :count).by(1)
-  #       # チームメンバーの確認
-  #       expect(Team.last.users).to include(admin)
-  #       expect(Team.last.users).not_to include(user_a)
-  #       expect(Team.last.users).to include(user_b)
-  #     end
-  #     it "新規チームの作成者が管理者になっている" do
-  #       post admin_teams_path, params: team_params
-  #       expect(Team.last.owner).to eq(admin)
-  #     end
-  #     it "新規チームを作成後、チーム管理ページに遷移する" do
-  #     post admin_teams_path, params: team_params
-  #     expect(response).to redirect_to(admin_teams_path)
-  #     end
-      
-  #   end
-  # end
+    context "管理者がログインしている場合" do
+      let(:admin) do
+        create(:user, admin: true)
+      end
+      before do
+        sign_in admin
+      end
+      context "正常なパラメータの場合" do
+        it "新規ユーザーを作成した後、チーム管理ページに遷移する" do
+          expect {
+            post admin_users_path, params: user_params
+          }.to change(User, :count).by(1)
+          #招待中のユーザーが作成されている
+          user = User.last
+          expect(user.invitation_token).to be_present
+          expect(user.invitation_accepted_at).to be_nil
+
+          expect(response).to redirect_to(admin_users_path)
+        end
+        it "招待メールが送信される" do
+          post admin_users_path, params: user_params
+          mail = ActionMailer::Base.deliveries.last
+          expect(mail).to be_present
+          expect(mail.to).to eq(["test@example.com"])
+          expect(mail.html_part.body.decoded).to include("OURTIME に招待されました")
+        end
+      end
+      context "ユーザー名が空欄の場合" do
+        let(:user_params) do
+          {
+            user: {
+              name: "",
+              email: "test@example.com",
+              admin: false
+            }
+          }
+        end
+        it "新規ユーザーを作成できない" do
+          expect {
+            post admin_users_path, params: user_params
+          }.not_to change(User, :count)
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+      context "メールアドレスが空欄の場合" do
+        let(:user_params) do
+          {
+            user: {
+              name: "新規ユーザー",
+              email: "",
+              admin: false
+            }
+          }
+        end
+        it "新規ユーザーを作成できない" do
+          expect {
+            post admin_users_path, params: user_params
+          }.not_to change(User, :count)
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+      context "メールアドレスに重複がある場合" do
+        let!(:existing_user) do
+          create(:user, email: "test@example.com")
+        end
+        it "新規ユーザーを作成できない" do
+          expect {
+            post admin_users_path, params: user_params
+          }.not_to change(User, :count)
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+    end
+  end
 
   # describe "GET /admin/teams/:id/edit" do
   #   let(:user) do

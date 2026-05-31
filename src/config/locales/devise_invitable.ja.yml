@@ -1,0 +1,5 @@
+ja:
+  devise:
+    mailer:
+      invitation_instructions:
+        subject: "【OURTIME】アカウント招待のお知らせ"

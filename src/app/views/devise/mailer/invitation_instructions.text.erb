@@ -1,0 +1,12 @@
+<%= @resource.name %> 様
+
+OURTIME に招待されました。
+
+以下のリンクからパスワードを設定し、アカウントを有効化してください。
+
+<%= accept_invitation_url(@resource, invitation_token: @token) %>
+
+この招待に心当たりがない場合は、本メールを破棄してください。
+アカウントは招待を承諾するまで有効化されません。
+
+OURTIME

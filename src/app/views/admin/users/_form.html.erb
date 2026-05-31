@@ -1,18 +1,47 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
   <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
-    <%= @user.persisted? ? "ユーザーの編集" : "新規ユーザーの作成" %>
+    <%= @user.persisted? ? "ユーザーの編集" : "新規ユーザーの招待" %>
   </h1>
 
   <%= form_with model: [:admin, @user], local: true do |f| %>
+    <!-- ユーザー名 -->
     <div class="mb-4">
       <%= f.label :name, "ユーザー名", class: "block text-gray-700 font-medium mb-2" %>
       <%= f.text_field :name,
-          class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+        class: "
+          w-full rounded px-3 py-2 
+          focus:outline-none focus:ring
+          #{@user.errors[:name].any? ?
+            'border border-red-500 focus:border-red-500 focus:ring-red-200' :
+            'border border-gray-300 focus:border-blue-500'}
+        " %>
+      <div class="h-2 mt-1">
+        <% if @user.errors[:name].any? %>
+          <p class="text-xs text-red-600">
+            ※<%= @user.errors[:name].first %>
+          </p>
+        <% end %>
+      </div>
     </div>
+
+    <!-- メールアドレス -->
     <div class="mb-4">
       <%= f.label :email, "メールアドレス", class: "block text-gray-700 font-medium mb-2" %>
       <%= f.email_field :email,
-          class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+          class: "
+          w-full rounded px-3 py-2 
+          focus:outline-none focus:ring
+          #{@user.errors[:email].any? ?
+            'border border-red-500 focus:border-red-500 focus:ring-red-200' :
+            'border border-gray-300 focus:border-blue-500'}
+        " %>
+       <div class="h-2 mt-1">
+        <% if @user.errors[:email].any? %>
+          <p class="text-xs text-red-600">
+            ※<%= @user.errors[:email].first %>
+          </p>
+        <% end %>
+      </div>
     </div>
 
     <div class="mb-6">
@@ -31,6 +60,8 @@
           </label>
         <% end %>
       </div>
+      <div class="h-2 mt-1">
+      </div>
     </div>
 
     <div class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
@@ -42,7 +73,7 @@
           </p>
 
           <p class="text-sm text-amber-700 mt-1">
-            ユーザー・チーム管理が可能になります。
+            ユーザー・チームの管理が可能になります。
           </p>
         </div>
 
@@ -59,14 +90,14 @@
               OFF
             </span> 
           </div>
-          <div class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform duration-300 peer-checked:translate-x-[44px]">
+          <div class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform duration-300 peer-checked:translate-x-11">
           </div>
         </label>
       </div>
     </div>
 
     <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
-      <%= f.submit @user.persisted? ? "更新" : "作成",
+      <%= f.submit @user.persisted? ? "更新" : "招待",
           class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
 
       <%= link_to "キャンセル", admin_users_path,

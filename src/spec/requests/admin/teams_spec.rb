@@ -87,7 +87,7 @@ RSpec.describe "Admin::Teams", type: :request do
           }
         }
       end
-      it "新規チームは作成されず、ログインページにリダイレクトされる" do
+      it "新規チームは作成できず、ログインページにリダイレクトされる" do
         # チーム数の確認
         expect {
           post admin_teams_path, params: team_params
@@ -112,7 +112,7 @@ RSpec.describe "Admin::Teams", type: :request do
       before do
         sign_in user
       end
-      it "新規チームは作成されず、ホーム画面にリダイレクトされる" do
+      it "新規チームは作成できず、ホーム画面にリダイレクトされる" do
         # チーム数の確認
         expect {
           post admin_teams_path, params: team_params
