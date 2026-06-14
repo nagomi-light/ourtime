@@ -26,16 +26,24 @@
 
     <!-- メールアドレス -->
     <div class="mb-4">
-      <%= f.label :email, "メールアドレス", class: "block text-gray-700 font-medium mb-2" %>
-      <%= f.email_field :email,
+      <% if @user.persisted? %>
+        <%= f.label :email, "メールアドレス(※編集できません。)", class: "block text-gray-700 font-medium mb-2" %>
+        <p class="w-full rounded px-3 py-2 border border-gray-300">
+          <%= @user.email %>
+        </p>
+      <% else %>
+        <%= f.label :email, "メールアドレス", class: "block text-gray-700 font-medium mb-2" %>
+        <%= f.email_field :email,
           class: "
-          w-full rounded px-3 py-2 
-          focus:outline-none focus:ring
-          #{@user.errors[:email].any? ?
-            'border border-red-500 focus:border-red-500 focus:ring-red-200' :
-            'border border-gray-300 focus:border-blue-500'}
-        " %>
-       <div class="h-2 mt-1">
+            w-full rounded px-3 py-2 
+            focus:outline-none focus:ring
+            #{@user.errors[:email].any? ?
+              'border border-red-500 focus:border-red-500 focus:ring-red-200' :
+              'border border-gray-300 focus:border-blue-500'}
+          " %>
+      <% end %>
+
+      <div class="h-2 mt-1">
         <% if @user.errors[:email].any? %>
           <p class="text-xs text-red-600">
             ※<%= @user.errors[:email].first %>
