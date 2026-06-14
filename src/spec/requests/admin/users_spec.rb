@@ -187,48 +187,44 @@ RSpec.describe "Admin::Users", type: :request do
     end
   end
 
-  # describe "GET /admin/teams/:id/edit" do
-  #   let(:user) do
-  #     create(:user, admin: false)
-  #   end
-  #   let(:admin) do
-  #     create(:user, admin: true)
-  #   end
-  #   let(:team) do
-  #     create(
-  #       :team,
-  #       name: "既存チーム",
-  #       owner: admin
-  #     )
-  #   end
+  describe "GET /admin/users/:id/edit" do
+    let(:user) do
+      create(:user, admin: false)
+    end
+    let(:admin) do
+      create(:user, admin: true)
+    end
+    let(:existing_user) do
+      create(:user)
+    end
     
-  #   context "ログインしていない場合" do
-  #     it "ログインページにリダイレクトされる" do
-  #       get edit_admin_team_path(team)
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
-  #   end
+    context "ログインしていない場合" do
+      it "ログインページにリダイレクトされる" do
+        get edit_admin_user_path(existing_user)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
 
-  #   context "一般ユーザーがログインしている場合" do
-  #     before do
-  #       sign_in user
-  #     end
-  #     it "ホーム画面にリダイレクトされる" do
-  #       get edit_admin_team_path(team)
-  #       expect(response).to redirect_to(root_path)
-  #     end
-  #   end
+    context "一般ユーザーがログインしている場合" do
+      before do
+        sign_in user
+      end
+      it "ホーム画面にリダイレクトされる" do
+        get edit_admin_user_path(existing_user)
+        expect(response).to redirect_to(root_path)
+      end
+    end
 
-  #   context "管理者がログインしている場合" do
-  #     before do
-  #       sign_in admin
-  #     end
-  #     it "チーム編集画面にアクセスできる" do
-  #       get edit_admin_team_path(team)
-  #       expect(response).to have_http_status(:ok)
-  #     end
-  #   end
-  # end
+    context "管理者がログインしている場合" do
+      before do
+        sign_in admin
+      end
+      it "ユーザー編集画面にアクセスできる" do
+        get edit_admin_user_path(existing_user)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 
   # describe "PATCH /admin/teams/:id/update" do
   #   let(:user_a) do
