@@ -1,0 +1,117 @@
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
+    <%= @user.persisted? ? "ユーザーの編集" : "新規ユーザーの招待" %>
+  </h1>
+
+  <%= form_with model: [:admin, @user], local: true do |f| %>
+    <!-- ユーザー名 -->
+    <div class="mb-4">
+      <%= f.label :name, "ユーザー名", class: "block text-gray-700 font-medium mb-2" %>
+      <%= f.text_field :name,
+        class: "
+          w-full rounded px-3 py-2 
+          focus:outline-none focus:ring
+          #{@user.errors[:name].any? ?
+            'border border-red-500 focus:border-red-500 focus:ring-red-200' :
+            'border border-gray-300 focus:border-blue-500'}
+        " %>
+      <div class="h-2 mt-1">
+        <% if @user.errors[:name].any? %>
+          <p class="text-xs text-red-600">
+            ※<%= @user.errors[:name].first %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- メールアドレス -->
+    <div class="mb-4">
+      <% if @user.persisted? %>
+        <%= f.label :email, "メールアドレス(※編集できません。)", class: "block text-gray-700 font-medium mb-2" %>
+        <p class="w-full rounded px-3 py-2 border border-gray-300">
+          <%= @user.email %>
+        </p>
+      <% else %>
+        <%= f.label :email, "メールアドレス", class: "block text-gray-700 font-medium mb-2" %>
+        <%= f.email_field :email,
+          class: "
+            w-full rounded px-3 py-2 
+            focus:outline-none focus:ring
+            #{@user.errors[:email].any? ?
+              'border border-red-500 focus:border-red-500 focus:ring-red-200' :
+              'border border-gray-300 focus:border-blue-500'}
+          " %>
+      <% end %>
+
+      <div class="h-2 mt-1">
+        <% if @user.errors[:email].any? %>
+          <p class="text-xs text-red-600">
+            ※<%= @user.errors[:email].first %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <p class="block text-gray-700 font-medium mb-2">
+        所属チーム
+      </p>
+
+      <div class="space-y-2 max-h-64 overflow-y-auto border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500">
+        <% @teams.each do |team| %>
+          <label class="flex items-center gap-2">
+            <%= check_box_tag "user[team_ids][]",
+                team.id,
+                @user.team_ids.include?(team.id),
+                class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+            <span><%= team.name %></span>
+          </label>
+        <% end %>
+      </div>
+      <div class="h-2 mt-1">
+      </div>
+    </div>
+
+    <div class="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+      <div class="flex items-center justify-between">
+
+        <div>
+          <p class="font-semibold text-amber-900">
+            管理者権限
+          </p>
+
+          <p class="text-sm text-amber-700 mt-1">
+            ユーザー・チームの管理が可能になります。
+          </p>
+        </div>
+
+        <label class="relative inline-flex items-center cursor-pointer">
+          <%= f.check_box :admin,
+              class: "peer sr-only" %>
+
+          <div class="relative w-20 h-9 rounded-full bg-gray-300 transition-colors duration-300 peer-checked:bg-amber-500">
+
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-white">
+              ON
+            </span>
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-700">
+              OFF
+            </span> 
+          </div>
+          <div class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform duration-300 peer-checked:translate-x-11">
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
+      <%= f.submit @user.persisted? ? "更新" : "招待",
+          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+
+      <%= link_to "キャンセル", admin_users_path,
+          class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+    </div>
+
+  <% end %>
+</div>
+
