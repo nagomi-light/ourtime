@@ -226,81 +226,80 @@ RSpec.describe "Admin::Users", type: :request do
     end
   end
 
-  # describe "PATCH /admin/teams/:id/update" do
-  #   let(:user_a) do
-  #     create(:user, admin: false)
-  #   end
-  #   let(:user_b) do
-  #     create(:user, admin: false)
-  #   end
-  #   let(:admin) do
-  #     create(:user, admin: true)
-  #   end
-  #   let!(:team) do
-  #     create(
-  #       :team,
-  #       name: "変更前のチーム名",
-  #       user_ids: [admin.id, user_b.id],
-  #       owner: admin
-  #     )
-  #   end
-  #   let(:team_params_update) do
-  #     {
-  #       team: {
-  #         name: "変更後のチーム名",
-  #         user_ids: [admin.id, user_a.id]
-  #       }
-  #     }
-  #   end
+  describe "PATCH /admin/users/:id/update" do
+    let(:user) do
+      create(:user, admin: false)
+    end
+    let(:admin) do
+      create(:user, admin: true)
+    end
 
-  #   context "ログインしていない場合" do
-  #     it "チームは更新されず、ログインページにリダイレクトされる" do
-  #       patch admin_team_path(team), params: team_params_update
-  #       # チーム名の確認
-  #       expect(Team.last.name).to eq("変更前のチーム名")
-  #       # チームメンバーの確認
-  #       expect(Team.last.users).to include(admin)
-  #       expect(Team.last.users).not_to include(user_a)
-  #       expect(Team.last.users).to include(user_b)
-  #       # リダイレクトの確認
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
-  #   end
+    let!(:existing_user) do
+      create(
+        :user,
+        name: "編集前のユーザー名",
+        email: "test@example.com"
+      )
+    end
+    let(:user_params_update) do
+      {
+        user: {
+          name: "編集後のユーザー名"
+        }
+      }
+    end
 
-  #   context "一般ユーザーがログインしている場合" do
-  #     before do
-  #       sign_in user_a
-  #     end
-  #     it "チームは更新されず、ホーム画面にリダイレクトされる" do
-  #       patch admin_team_path(team), params: team_params_update
-  #       # チーム名の確認
-  #       expect(Team.last.name).to eq("変更前のチーム名")
-  #       # チームメンバーの確認
-  #       expect(Team.last.users).to include(admin)
-  #       expect(Team.last.users).not_to include(user_a)
-  #       expect(Team.last.users).to include(user_b)
-  #       # リダイレクトの確認
-  #       expect(response).to redirect_to(root_path)
-  #     end
-  #   end
+    context "ログインしていない場合" do
+      it "ユーザーは更新されず、ログインページにリダイレクトされる" do
+        patch admin_user_path(existing_user), params: user_params_update
+        expect(User.find_by(email: "test@example.com").name).to eq("編集前のユーザー名")
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
 
-  #   context "管理者がログインしている場合" do
-  #     before do
-  #       sign_in admin
-  #     end
-  #     it "チームを更新した後、チーム管理ページに遷移する" do
-  #       patch admin_team_path(team), params: team_params_update
-  #       # チーム名の確認
-  #       expect(Team.last.name).to eq("変更後のチーム名")
-  #       # チームメンバーの確認
-  #       expect(Team.last.users).to include(admin)
-  #       expect(Team.last.users).to include(user_a)
-  #       expect(Team.last.users).not_to include(user_b)
-  #       # リダイレクトの確認
-  #       expect(response).to redirect_to(admin_teams_path)
-  #     end
-  #   end
-  # end
+    context "一般ユーザーがログインしている場合" do
+      before do
+        sign_in user
+      end
+      it "ユーザーは更新されず、ホーム画面にリダイレクトされる" do
+        patch admin_user_path(existing_user), params: user_params_update
+        expect(User.find_by(email: "test@example.com").name).to eq("編集前のユーザー名")
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
+    context "管理者がログインしている場合" do
+      before do
+        sign_in admin
+      end
+      context "正常なパラメータの場合" do
+        it "ユーザーを更新した後、チーム管理ページに遷移する" do
+          patch admin_user_path(existing_user), params: user_params_update
+          existing_user.reload
+          expect(existing_user.name).to eq("編集後のユーザー名")
+          expect(response).to redirect_to(admin_users_path)
+        end
+      end
+      context "メールアドレスに変更がある場合" do
+        let!(:user_params_update) do
+          {
+            user: {
+              name: "編集後のユーザー名",
+              email: "update_test@example.com"
+            }
+          }
+        end
+        it "メールアドレスの変更は反映せず、ユーザーを更新する" do
+          patch admin_user_path(existing_user), params: user_params_update
+          existing_user.reload
+          expect(existing_user.name).to eq("編集後のユーザー名")
+          expect(existing_user.email).to eq("test@example.com")
+          expect(response).to redirect_to(admin_users_path)
+        end
+      end
+
+    end
+  end
 
   # describe "DELETE /admin/teams/:id/destroy" do
   #   let(:user) do

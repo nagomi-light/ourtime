@@ -49,12 +49,12 @@ class Admin::UsersController < ApplicationController
   end
 
   def update
-    # if @team.update(team_params)
-    #   redirect_to admin_teams_path, notice: "チームを更新しました"
-    # else
-    #   @users = User.all
-    #   render :edit, status: :unprocessable_entity
-    # end
+    if @user.update(user_params)
+      redirect_to admin_users_path, notice: "ユーザーを更新しました"
+    else
+      @teams = Team.all
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -69,12 +69,11 @@ class Admin::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(
-      :name, 
-      :email,
-      :admin,
-      team_ids: []
-    )
+    if action_name == "create"
+      params.require(:user).permit(:name, :email, :admin, team_ids: [])
+    else
+      params.require(:user).permit(:name, :admin, team_ids: [])
+    end
   end
 
   # 管理者権限
