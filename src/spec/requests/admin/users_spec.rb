@@ -301,52 +301,52 @@ RSpec.describe "Admin::Users", type: :request do
     end
   end
 
-  # describe "DELETE /admin/teams/:id/destroy" do
-  #   let(:user) do
-  #     create(:user, admin: false)
-  #   end
-  #   let(:admin) do
-  #     create(:user, admin: true)
-  #   end
-  #   let!(:team) do
-  #     create(
-  #       :team,
-  #       name: "既存チーム"
-  #     )
-  #   end
+  describe "DELETE /admin/users/:id/destroy" do
+    let(:user) do
+      create(:user, admin: false)
+    end
+    let(:admin) do
+      create(:user, admin: true)
+    end
+    let!(:existing_user) do
+      create(
+        :user,
+        name: "既存ユーザー"
+      )
+    end
 
-  #   context "ログインしていない場合" do
-  #     it "チームは削除できず、ログインページにリダイレクトされる" do
-  #       expect {
-  #         delete admin_team_path(team)
-  #       }.to change(Team, :count).by(0)
-  #       expect(response).to redirect_to(new_user_session_path)
-  #     end
-  #   end
+    context "ログインしていない場合" do
+      it "チームは削除できず、ログインページにリダイレクトされる" do
+        expect {
+          delete admin_user_path(existing_user)
+        }.to change(User, :count).by(0)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
 
-  #   context "一般ユーザーがログインしている場合" do
-  #     before do
-  #       sign_in user
-  #     end
-  #     it "チームは削除できず、ホーム画面にリダイレクトされる" do
-  #       expect {
-  #         delete admin_team_path(team)
-  #       }.to change(Team, :count).by(0)
-  #       expect(response).to redirect_to(root_path)
-  #     end
-  #   end
+    context "一般ユーザーがログインしている場合" do
+      before do
+        sign_in user
+      end
+      it "チームは削除できず、ホーム画面にリダイレクトされる" do
+        expect {
+          delete admin_user_path(existing_user)
+        }.to change(User, :count).by(0)
+        expect(response).to redirect_to(root_path)
+      end
+    end
 
-  #   context "管理者がログインしている場合" do
-  #     before do
-  #       sign_in admin
-  #     end
-  #     it "チームを削除した後、チーム管理ページに遷移する" do
-  #       expect {
-  #         delete admin_team_path(team)
-  #       }.to change(Team, :count).by(-1)
-  #       expect(response).to redirect_to(admin_teams_path)
-  #     end
-  #   end
-  # end
+    context "管理者がログインしている場合" do
+      before do
+        sign_in admin
+      end
+      it "チームを削除した後、チーム管理ページに遷移する" do
+        expect {
+          delete admin_user_path(existing_user)
+        }.to change(User, :count).by(-1)
+        expect(response).to redirect_to(admin_users_path)
+      end
+    end
+  end
 
 end
