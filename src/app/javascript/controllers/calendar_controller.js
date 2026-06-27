@@ -14,6 +14,7 @@ export default class extends Controller {
       initialView: "dayGridMonth",
       locale: "ja",
       events: this.fetchEvents.bind(this),
+
       height: "auto", 
       expandRows: false,   
       fixedWeekCount: false, 
