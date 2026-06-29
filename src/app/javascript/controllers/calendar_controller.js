@@ -15,6 +15,10 @@ export default class extends Controller {
       locale: "ja",
       events: this.fetchEvents.bind(this),
 
+      eventClick: (info) => {
+        window.location.href = `/events/${info.event.id}`
+      },
+
       height: "auto", 
       expandRows: false,   
       fixedWeekCount: false, 
