@@ -25,6 +25,9 @@ class Admin::UsersController < ApplicationController
     end
 
     if @user.errors.empty?
+      Rails.logger.info "Delivery method: #{ActionMailer::Base.delivery_method}"
+      Rails.logger.info "SMTP settings: #{ActionMailer::Base.smtp_settings.inspect}"
+      Rails.logger.info "Default URL: #{ActionMailer::Base.default_url_options.inspect}"
       invited_user = User.invite!(
         name: user_params[:name],
         email: user_params[:email]
