@@ -1,7 +1,3 @@
-# 開発用サンプルデータ
-return unless Rails.env.development?
-
-
 # ユーザー作成
 tanaka = User.find_or_create_by!(email: "tanaka@example.com") do |u|
   u.name = "田中"
@@ -56,7 +52,6 @@ TeamMember.find_or_create_by!(user: sato, team: customer_success)
 TeamMember.find_or_create_by!(user: suzuki, team: inside_sales)
 TeamMember.find_or_create_by!(user: takahashi, team: field_sales)
 TeamMember.find_or_create_by!(user: yamada, team: customer_success)
-
 
 # 個人の予定の作成
 Event.create!(
