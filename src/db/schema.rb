@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_23_085807) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_16_155025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,10 +40,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_23_085807) do
 
   create_table "teams", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "owner_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_id"], name: "index_teams_on_owner_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -75,5 +73,4 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_23_085807) do
   add_foreign_key "events", "users"
   add_foreign_key "team_members", "teams"
   add_foreign_key "team_members", "users"
-  add_foreign_key "teams", "users", column: "owner_id"
 end

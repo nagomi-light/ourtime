@@ -29,17 +29,9 @@ users = [tanaka, sato, suzuki, takahashi, yamada]
 
 
 # チーム作成
-inside_sales = Team.find_or_create_by!(name: "インサイドセールス") do |team|
-  team.owner = tanaka
-end
-
-field_sales = Team.find_or_create_by!(name: "フィールドセールス") do |team|
-  team.owner = sato
-end
-
-customer_success = Team.find_or_create_by!(name: "カスタマーサクセス") do |team|
-  team.owner = yamada
-end
+inside_sales = Team.find_or_create_by!(name: "インサイドセールス") 
+field_sales = Team.find_or_create_by!(name: "フィールドセールス") 
+customer_success = Team.find_or_create_by!(name: "カスタマーサクセス") 
 
 teams = [inside_sales, field_sales, customer_success]
 

@@ -13,7 +13,6 @@ class Admin::TeamsController < ApplicationController
 
   def create
     @team = Team.new(team_params)
-    @team.owner = current_user
 
     if @team.save
       redirect_to admin_teams_path, notice: "チームを作成しました"
