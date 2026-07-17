@@ -7,6 +7,8 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード（確認）"
         name: "ユーザー名"
+      team:
+        name: "チーム名"
     errors:
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
