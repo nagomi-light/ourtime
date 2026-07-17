@@ -7,6 +7,12 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード（確認）"
         name: "ユーザー名"
+      event:
+        title: "タイトル"
+        description: "説明"
+        start_time: "開始時間"
+        :end_time: "終了時間"
+
       team:
         name: "チーム名"
     errors:
