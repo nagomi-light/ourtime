@@ -15,6 +15,12 @@ export default class extends Controller {
       locale: "ja",
       events: this.fetchEvents.bind(this),
 
+      eventTimeFormat: {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      },
+
       eventClick: (info) => {
         window.location.href = `/events/${info.event.id}`
       },
