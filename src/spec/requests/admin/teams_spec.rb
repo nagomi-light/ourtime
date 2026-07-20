@@ -26,8 +26,8 @@ RSpec.describe "Admin::Teams", type: :request do
       let(:admin) do
         create(:user, admin: true)
       end
-      let!(:team_a) { create(:team, name: "チームA", owner_id: admin.id) }
-      let!(:team_b) { create(:team, name: "チームB", owner_id: admin.id) }
+      let!(:team_a) { create(:team, name: "チームA") }
+      let!(:team_b) { create(:team, name: "チームB") }
       before do
         sign_in admin
       end
@@ -153,13 +153,9 @@ RSpec.describe "Admin::Teams", type: :request do
         expect(Team.last.users).not_to include(user_a)
         expect(Team.last.users).to include(user_b)
       end
-      it "新規チームの作成者が管理者になっている" do
-        post admin_teams_path, params: team_params
-        expect(Team.last.owner).to eq(admin)
-      end
       it "新規チームを作成後、チーム管理ページに遷移する" do
-      post admin_teams_path, params: team_params
-      expect(response).to redirect_to(admin_teams_path)
+        post admin_teams_path, params: team_params
+        expect(response).to redirect_to(admin_teams_path)
       end
       
     end
@@ -175,8 +171,7 @@ RSpec.describe "Admin::Teams", type: :request do
     let(:team) do
       create(
         :team,
-        name: "既存チーム",
-        owner: admin
+        name: "既存チーム"
       )
     end
     
@@ -222,8 +217,7 @@ RSpec.describe "Admin::Teams", type: :request do
       create(
         :team,
         name: "変更前のチーム名",
-        user_ids: [admin.id, user_b.id],
-        owner: admin
+        user_ids: [admin.id, user_b.id]
       )
     end
     let(:team_params_update) do

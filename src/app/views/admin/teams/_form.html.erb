@@ -8,6 +8,13 @@
       <%= f.label :name, "チーム名", class: "block text-gray-700 font-medium mb-2" %>
       <%= f.text_field :name,
           class: "w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500" %>
+      <div class="h-2 mt-1">
+        <% if @team.errors[:name].any? %>
+          <p class="text-xs text-red-600">
+            ※<%= @team.errors.full_messages_for(:name).first %>
+          </p>
+        <% end %>
+      </div>
     </div>
 
     <div class="mb-6">

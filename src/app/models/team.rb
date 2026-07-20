@@ -1,6 +1,7 @@
 class Team < ApplicationRecord
-  belongs_to :owner, class_name: 'User'
+  validates :name, presence: true
 
+  has_many :events, dependent: :destroy
   has_many :team_members, dependent: :destroy
   has_many :users, through: :team_members
 end
