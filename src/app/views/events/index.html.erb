@@ -23,9 +23,18 @@
               >
               ▸
               </button>
+
+              <!-- チーム名 -->
               <span class="font-medium text-gray-800">
                 <%= team.name %>
               </span>
+
+              <!-- チームカラー -->
+              <span
+                class="w-1 h-5 rounded-sm"
+                style="background-color: <%= team.color %>;"
+              ></span>
+
               <!-- チェックボックス -->
               <input
                 type="checkbox"

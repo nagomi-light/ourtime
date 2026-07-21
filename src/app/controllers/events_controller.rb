@@ -26,7 +26,8 @@ class EventsController < ApplicationController
             start: e.start_time.iso8601,
             end: e.end_time&.iso8601,
             team_id: e.team_id,
-            user_id: e.user_id
+            user_id: e.user_id,
+            color: e.calendar_color
           }
         }
       end

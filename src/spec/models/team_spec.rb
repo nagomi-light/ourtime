@@ -21,4 +21,11 @@ RSpec.describe Team, type: :model do
     it { is_expected.to have_many(:team_members).dependent(:destroy) }
     it { is_expected.to have_many(:users).through(:team_members) }
   end
+
+  describe "callbacks" do
+    it "作成時にcolorが設定される" do
+      team = create(:team)
+      expect(team.color).to be_present
+    end
+  end
 end

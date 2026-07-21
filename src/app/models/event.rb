@@ -5,8 +5,15 @@ class Event < ApplicationRecord
   validates :title, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true
-
   validate :end_time_after_start_time
+
+  def calendar_color
+    if team.present?
+      team.color
+    else
+      "#222222"
+    end
+  end
 
   private
 
