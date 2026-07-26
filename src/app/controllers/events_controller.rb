@@ -3,6 +3,8 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy]
   before_action :authorize_visibility!, only: [:show]
   before_action :authorize_owner!, only: [:edit, :update, :destroy]
+  before_action :normalize_all_day_times, only: [:create, :update]
+  
   def index
     # 自分が作成した予定の一覧を表示
     # @events = current_user.events
@@ -27,6 +29,7 @@ class EventsController < ApplicationController
             end: e.end_time&.iso8601,
             team_id: e.team_id,
             user_id: e.user_id,
+            allDay: e.all_day,
             color: e.calendar_color
           }
         }
@@ -84,6 +87,7 @@ class EventsController < ApplicationController
       :description,
       :start_time,
       :end_time,
+      :all_day,
       :team_id
     )
   end
@@ -104,6 +108,17 @@ class EventsController < ApplicationController
   # 予定作成者用の権限(edit、update、destroy)
   def authorize_owner!
     head :forbidden unless @event.user == current_user
+  end
+
+  # 終日予定の設定
+  def normalize_all_day_times
+    return unless params[:event][:all_day] == "1"
+
+    start_date = Date.parse(params[:event][:start_time])
+    end_date   = Date.parse(params[:event][:end_time])
+
+    params[:event][:start_time] = start_date.beginning_of_day
+    params[:event][:end_time]   = end_date.next_day.beginning_of_day
   end
 
 end

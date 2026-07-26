@@ -8,7 +8,6 @@ class Team < ApplicationRecord
   before_create :assign_color
 
   TEAM_COLORS = [
-    "#3B82F6", # Blue
     "#10B981", # Green
     "#EF4444", # Red
     "#F59E0B", # Amber
