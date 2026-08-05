@@ -20,7 +20,21 @@ RSpec.describe "Events", type: :system do
     login_as(user, scope: :user)
   end
 
-  describe "予定の作成" do
+  describe "予定の作成", js: true do
+    it "カレンダーの日付をクリックすると、その日付が入力された新規予定作成画面へ遷移する" do
+      visit root_path
+      target_date = Date.current.beginning_of_month + 10.days
+      find(".fc-daygrid-day[data-date='#{target_date}']").click
+      expect(page).to have_current_path(new_event_path, ignore_query: true)
+      expect(
+        find("input[type='datetime-local'][name='event[start_time]']").value
+      ).to start_with(target_date.strftime("%Y-%m-%d"))
+      expect(
+        find("input[type='datetime-local'][name='event[end_time]']").value
+      ).to start_with(target_date.strftime("%Y-%m-%d"))
+    end
+
+
     it "予定作成画面では、終日のチェックボックスによって画面表示が変化する" do
       visit root_path
       click_link "新規予定の作成"

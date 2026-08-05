@@ -73,6 +73,14 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+
+    # カレンダー内から作成画面に遷移した場合、クリックした日付の時間を取得
+    if params[:date].present?
+      date = Date.parse(params[:date])
+
+      @event.start_time = date.beginning_of_day
+      @event.end_time = date.beginning_of_day + 1.hour
+    end
   end
 
   def create

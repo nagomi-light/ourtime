@@ -25,6 +25,11 @@ export default class extends Controller {
         window.location.href = `/events/${info.event.id}`
       },
 
+      dateClick: (info) => {
+        window.location.href =
+          `/events/new?date=${info.dateStr}`
+      },
+
       height: "auto", 
       expandRows: false,   
       fixedWeekCount: false, 
