@@ -17,7 +17,7 @@
 
   <%= form_with model: event,
       local: true,
-      data: { controller: "all-day" } do |f| %>
+      data: { controller: "all-day repeat" } do |f| %>
 
     <div class="mb-4">
       <%= f.label :title, "タイトル", class: "block text-gray-700 font-medium mb-2" %>
@@ -83,6 +83,24 @@
               data: { all_day_target: "dateInput" },
               class: "w-full border border-gray-300 rounded px-3 py-2" %>
       </div>
+    </div>
+
+    <div class="mb-6">
+      <%= label_tag :repeat_type, "繰り返し",
+        class: "block text-gray-700 font-medium mb-2" %>
+      <%= select_tag :repeat_type,
+        options_for_select([
+          ["なし", "none"],
+          ["毎日", "daily"],
+          ["毎週", "weekly"],
+          ["毎月", "monthly"],
+          ["毎年", "yearly"]
+        ]),
+        data: {
+          repeat_target: "type",
+          action: "change->repeat#toggle"
+        },
+        class: "w-full border border-gray-300 rounded px-3 py-2" %>
     </div>
 
     <div class="mb-6">

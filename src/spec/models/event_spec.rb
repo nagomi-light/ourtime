@@ -66,6 +66,41 @@ RSpec.describe Event, type: :model do
     end
   end
 
+  describe "#repeat_label" do
+    it "繰り返しなしの場合はnilを返す" do
+      event = build(:event, repeat_rule: nil)
+      expect(event.repeat_label).to be_nil
+    end
+
+    it "毎日の予定は「毎日」を返す" do
+      schedule = IceCube::Schedule.new(Time.current)
+      schedule.add_recurrence_rule(IceCube::Rule.daily)
+      event = build(:event, repeat_rule: schedule.to_yaml)
+      expect(event.repeat_label).to eq("毎日")
+    end
+
+    it "毎週の予定は「毎週」を返す" do
+      schedule = IceCube::Schedule.new(Time.current)
+      schedule.add_recurrence_rule(IceCube::Rule.weekly)
+      event = build(:event, repeat_rule: schedule.to_yaml)
+      expect(event.repeat_label).to eq("毎週")
+    end
+
+    it "毎月の予定は「毎月」を返す" do
+      schedule = IceCube::Schedule.new(Time.current)
+      schedule.add_recurrence_rule(IceCube::Rule.monthly)
+      event = build(:event, repeat_rule: schedule.to_yaml)
+      expect(event.repeat_label).to eq("毎月")
+    end
+
+    it "毎年の予定は「毎年」を返す" do
+      schedule = IceCube::Schedule.new(Time.current)
+      schedule.add_recurrence_rule(IceCube::Rule.yearly)
+      event = build(:event, repeat_rule: schedule.to_yaml)
+      expect(event.repeat_label).to eq("毎年")
+    end
+  end
+
   describe "#error_attribute_name" do
     context "終日予定ではない場合" do
       let(:event) { build(:event, all_day: false) }

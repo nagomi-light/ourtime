@@ -15,6 +15,24 @@ class Event < ApplicationRecord
     end
   end
 
+  def repeat_label
+    return if repeat_rule.blank?
+
+    schedule = IceCube::Schedule.from_yaml(repeat_rule)
+    rule = schedule.recurrence_rules.first
+
+    case rule
+    when IceCube::DailyRule
+      "毎日"
+    when IceCube::WeeklyRule
+      "毎週"
+    when IceCube::MonthlyRule
+      "毎月"
+    when IceCube::YearlyRule
+      "毎年"
+    end
+  end
+
   
   def error_attribute_name(attribute)
     return self.class.human_attribute_name(attribute) unless all_day?
@@ -28,6 +46,8 @@ class Event < ApplicationRecord
       self.class.human_attribute_name(attribute)
     end
   end
+
+  
 
   private
   

@@ -54,7 +54,12 @@ export default class extends Controller {
 
   async fetchEvents(info, successCallback, failureCallback) {
     try {
-      const response = await fetch("/events.json")
+      const params = new URLSearchParams({
+        start: info.startStr,
+        end: info.endStr
+      })
+
+      const response = await fetch(`/events.json?${params}`)
       const events = await response.json()
 
       const filtered = events.filter(event => {
