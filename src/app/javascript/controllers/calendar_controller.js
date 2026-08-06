@@ -15,8 +15,19 @@ export default class extends Controller {
       locale: "ja",
       events: this.fetchEvents.bind(this),
 
+      eventTimeFormat: {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      },
+
       eventClick: (info) => {
         window.location.href = `/events/${info.event.id}`
+      },
+
+      dateClick: (info) => {
+        window.location.href =
+          `/events/new?date=${info.dateStr}`
       },
 
       height: "auto", 
@@ -48,7 +59,12 @@ export default class extends Controller {
 
   async fetchEvents(info, successCallback, failureCallback) {
     try {
-      const response = await fetch("/events.json")
+      const params = new URLSearchParams({
+        start: info.startStr,
+        end: info.endStr
+      })
+
+      const response = await fetch(`/events.json?${params}`)
       const events = await response.json()
 
       const filtered = events.filter(event => {

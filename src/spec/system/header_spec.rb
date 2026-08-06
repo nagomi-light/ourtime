@@ -23,6 +23,7 @@ RSpec.describe "Header", type: :system do
       visit root_path
       expect(page).to have_css("#user-menu.hidden")
       find("button[data-action='click->dropdown#toggle']").click
+      expect(page).to have_link("カレンダー")
       expect(page).not_to have_link("チーム管理")
       expect(page).not_to have_link("ユーザー管理")
       expect(page).to have_link("パスワード変更")
@@ -45,6 +46,7 @@ RSpec.describe "Header", type: :system do
       visit root_path
       expect(page).to have_css("#user-menu.hidden")
       find("button[data-action='click->dropdown#toggle']").click
+      expect(page).to have_link("カレンダー")
       expect(page).to have_link("チーム管理")
       expect(page).to have_link("ユーザー管理")
       expect(page).to have_link("パスワード変更")

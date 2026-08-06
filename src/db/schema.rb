@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_20_032831) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_21_085307) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_20_032831) do
     t.text "repeat_rule"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "all_day", default: false, null: false
     t.index ["team_id"], name: "index_events_on_team_id"
     t.index ["user_id"], name: "index_events_on_user_id"
   end
@@ -43,6 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_20_032831) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color"
   end
 
   create_table "users", force: :cascade do |t|

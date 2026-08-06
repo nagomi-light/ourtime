@@ -20,6 +20,18 @@ RSpec.describe "Events", type: :request do
           }
         }
       end
+
+      let(:repeat_event_params) do
+        {
+          event: {
+            title: "繰り返し予定",
+            start_time: Time.zone.local(2026, 8, 1, 10, 0),
+            end_time: Time.zone.local(2026, 8, 1, 11, 0)
+          },
+          repeat_type: "weekly"
+        }
+      end
+
       before do
         sign_in user
       end
@@ -34,6 +46,21 @@ RSpec.describe "Events", type: :request do
 
         titles = json.map { |e| e["title"] }
         expect(titles).to include("自分が作成した予定")
+      end
+      it "繰り返し予定は、各日ごとに予定が表示される" do
+        post events_path, params: repeat_event_params
+        get events_path(format: :json), params: {
+          start: "2026-08-01T00:00:00+09:00",
+          end:   "2026-09-01T00:00:00+09:00"
+        }
+        json = JSON.parse(response.body)
+
+        starts = json.map { |e| e["start"] }
+        expect(starts).to include(Time.zone.local(2026, 8, 1, 10, 0).iso8601)
+        expect(starts).to include(Time.zone.local(2026, 8, 8, 10, 0).iso8601)
+        expect(starts).to include(Time.zone.local(2026, 8, 15, 10, 0).iso8601)
+        expect(starts).to include(Time.zone.local(2026, 8, 22, 10, 0).iso8601)
+        expect(starts).to include(Time.zone.local(2026, 8, 29, 10, 0).iso8601)
       end
     end
   end
@@ -236,7 +263,6 @@ RSpec.describe "Events", type: :request do
         expect(response).to redirect_to(events_path)
       end
       
-      # 追加テスト
       it "ユーザーB（別ユーザー）の予定は削除できない" do
         expect {
           delete event_path(event_b)
