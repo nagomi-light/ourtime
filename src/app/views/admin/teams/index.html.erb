@@ -1,26 +1,26 @@
 <div>
   <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold">チーム管理</h1>
+    <h1 class="text-xl md:text-2xl font-bold">チーム管理</h1>
     <%= link_to "新規チームの作成",
         new_admin_team_path,
-        class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+        class: "bg-blue-500 text-white px-3 md:px-6 py-2 rounded hover:bg-blue-600 text-xs md:text-base" %>
   </div>
 
   <div class="space-y-4">
   <% @teams.each do |team| %>
 
-    <div class="bg-white border border-gray-200 rounded-2xl p-6
+    <div class="bg-white border border-gray-200 rounded-2xl p-4 md:p-6
                 hover:shadow-md hover:border-blue-300 transition"
          id="team-<%= team.id %>">
 
       <div class="flex items-center justify-between">
 
         <!-- 左：チームの情報 -->
-        <div class="flex items-center gap-4"">
+        <div class="flex items-center gap-3 md:gap-4 min-w-0">
 
           <!-- アイコン -->
-          <div class="w-14 h-14 rounded-2xl bg-blue-100
-                      flex items-center justify-center">
+          <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-blue-100
+                      flex items-center justify-center shrink-0">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 24 24"
                  fill="none"
@@ -42,7 +42,7 @@
               <%= team.users.count %>人のメンバー
             </p>
 
-            <p class="text-sm text-gray-400 mt-2">
+            <p class="text-sm text-gray-400 mt-2 break-words">
               <%= team.users.limit(5).map(&:name).join(" / ") %>
 
               <% if team.users.count > 5 %>
@@ -54,10 +54,10 @@
         </div>
 
         <!-- 右：操作ボタン -->
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col items-center gap-2 md:flex-row md:gap-3">
           <!-- チームの編集ボタン -->
           <%= link_to edit_admin_team_path(team),
-              class: "w-10 h-10 rounded-xl border border-gray-300
+              class: "w-9 h-9 md:w-10 md:h-10 rounded-xl border border-gray-300
                       flex items-center justify-center
                       hover:bg-gray-100 transition" do %>
             <svg xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +75,7 @@
                 turbo_method: :delete,
                 turbo_confirm: "削除しますか？"
               },
-              class: "w-10 h-10 rounded-xl border border-red-200
+              class: "w-9 h-9 md:w-10 md:h-10 rounded-xl border border-red-200
                       text-red-500 flex items-center justify-center
                       hover:bg-red-50 transition" do %>
             <svg xmlns="http://www.w3.org/2000/svg"
