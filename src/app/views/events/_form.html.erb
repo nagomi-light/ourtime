@@ -1,5 +1,5 @@
-<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-  <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
+<div class="max-w-3xl mx-auto mt-2 md:mt-10 p-4 md:p-6 bg-white rounded-lg shadow-md">
+  <h1 class="border-b border-gray-200 pb-4 text-xl md:text-2xl font-bold mb-6 text-center">
     <%= event.persisted? ? "予定の編集" : "予定の追加" %>
   </h1>
 
@@ -44,7 +44,7 @@
     <!-- 終日の予定ではない場合の時間入力フォーム -->
     <div
       data-all-day-target="timeFields"
-      class="grid grid-cols-2 gap-4 mb-4">
+      class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <div>
         <%= f.label :start_time, "開始時間", class: "block text-gray-700 font-medium mb-2" %>
         <%= f.datetime_local_field :start_time,
@@ -65,7 +65,7 @@
     <!-- 終日の予定である場合の時間入力フォーム -->
     <div
       data-all-day-target="dateFields"
-      class="grid grid-cols-2 gap-4 mb-4 hidden">
+      class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hidden">
       <div>
         <%= f.label :start_time, "開始日", class: "block text-gray-700 font-medium mb-2" %>
 
@@ -115,10 +115,10 @@
 
     <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
       <%= f.submit @event.persisted? ? "更新" : "作成",
-          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+          class: "bg-blue-500 text-white px-3 md:px-6 py-2 rounded hover:bg-blue-600" %>
 
       <%= link_to "キャンセル", events_path,
-          class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+          class: "px-3 md:px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
     </div>
 
   <% end %>

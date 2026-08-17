@@ -1,5 +1,5 @@
-<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-  <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
+<div class="max-w-3xl mx-auto mt-2 md:mt-10 p-4 md:p-6 bg-white rounded-lg shadow-md">
+  <h1 class="border-b border-gray-200 pb-4 text-xl md:text-2xl font-bold mb-6 text-center">
     <%= @user.persisted? ? "ユーザーの編集" : "新規ユーザーの招待" %>
   </h1>
 
@@ -94,7 +94,7 @@
             <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-white">
               ON
             </span>
-            <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-700">
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-700">
               OFF
             </span> 
           </div>
@@ -106,10 +106,10 @@
 
     <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
       <%= f.submit @user.persisted? ? "更新" : "招待",
-          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+          class: "bg-blue-500 text-white px-3 md:px-6 py-2 rounded hover:bg-blue-600" %>
 
       <%= link_to "キャンセル", admin_users_path,
-          class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+          class: "px-3 md:px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
     </div>
 
   <% end %>

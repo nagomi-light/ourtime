@@ -5,31 +5,98 @@
 @source "../../../app/javascript/**/*.js";
 
 /* FullCalendar用の設定 */
-
 .fc {
   background-color: white;
 }
-
 .fc-event {
   cursor: pointer;
 }
-
 .fc-toolbar-title {
   font-size: 1.25rem;
   font-weight: 600;
 }
-
 .fc-button {
   background-color: #2563eb; /* blue-600 */
   border: none;
 }
-
 .fc-button-primary:not(:disabled).fc-button-active {
   background-color: #1e40af; /* blue-800 */
 }
-
 .fc .fc-daygrid-body table {
   table-layout: fixed;
 }
 
+/* 予定をセル内に収める */
+.fc-daygrid-event {
+  overflow: hidden;
+}
+.fc-event-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
+/* レスポンシブデザイン */
+
+@media (max-width: 767px) {
+  /* カレンダー全体 */
+  .fc {
+    font-size: 12px;
+  }
+
+  /* カレンダーのタイトル */
+  .fc-toolbar-title {
+    font-size: 1rem;
+  }
+
+  /* today / 前月 / 次月ボタン */
+  .fc-button {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.55rem;
+  }
+
+  /* ヘッダーとカレンダーの間隔 */
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5rem;
+  }
+
+  /* 曜日 */
+  .fc-col-header-cell-cushion {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+
+  /* 日付 */
+  .fc-daygrid-day-number {
+    font-size: 0.75rem;
+    padding: 0.25rem;
+  }
+
+  /* 予定 */
+  .fc-daygrid-event {
+    font-size: 0.65rem;
+    margin: 1px 2px;
+  }
+  .fc-event-title {
+    font-size: 0.65rem;
+  }
+
+  /* 通常のカレンダー内だけ時間を非表示 */
+  .fc-daygrid-body .fc-daygrid-event .fc-event-time {
+    display: none;
+  }
+
+  /* moreのポップオーバーでは時間を表示 */
+  .mobile-more-popover .fc-event-time {
+    display: inline;
+  }
+
+  /* セル内部の余白 */
+  .fc-daygrid-day-frame {
+    min-height: 0;
+  }
+  .fc-daygrid-day-events {
+    margin-top: 1px;
+  }
+
+}

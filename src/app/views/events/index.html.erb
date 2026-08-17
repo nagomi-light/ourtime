@@ -1,10 +1,10 @@
-<div class="max-w-6xl mx-auto px-4 py-6">
-  <div class="flex gap-6">
+<div class="max-w-6xl mx-auto px-2 py-3 md:px-4 md:py-6">
+  <div class="flex flex-col lg:flex-row gap-6">
 
     <!-- サイドバー -->
     <aside 
       data-controller="sidebar" 
-      class="w-64 bg-gray-50 rounded-lg p-4 shadow">
+      class="order-2 lg:order-1 w-full lg:w-64 bg-gray-50 rounded-lg p-4 shadow">
       <h3 class="text-lg font-semibold mb-4">
         チーム
       </h3>
@@ -71,13 +71,13 @@
 
 
     <!-- メイン -->
-    <main class="flex-1">
+     <main class="order-1 lg:order-2 flex-1 min-w-0">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="font-bold text-4xl">予定一覧</h1>
+        <h1 class="font-bold text-2xl md:text-4xl">予定一覧</h1>
 
         <%= link_to "新規予定の作成",
             new_event_path,
-            class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            class: "bg-blue-500 text-white text-xs md:text-base px-3 md:px-6 py-2 rounded hover:bg-blue-600"
         %>
       </div>
 
@@ -85,7 +85,7 @@
         data-controller="calendar" 
         data-action="sidebar:filter@window->calendar#filter"
         data-turbo="false"
-        class="bg-white rounded-lg shadow p-4"
+        class="bg-white rounded-lg shadow p-2 md:p-4"
       ></div>
     </main>
   </div>

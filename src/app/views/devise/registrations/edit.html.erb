@@ -1,5 +1,5 @@
-<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-  <h1 class="border-b border-gray-200 pb-4 text-2xl font-bold mb-6 text-center">
+<div class="max-w-3xl mx-auto mt-2 md:mt-10 p-4 md:p-6 bg-white rounded-lg shadow-md">
+  <h1 class="border-b border-gray-200 pb-4 text-xl md:text-2xl font-bold mb-6 text-center">
     パスワードの変更
   </h1>
 
@@ -75,9 +75,9 @@
 
     <div class="flex justify-between gap-4 mt-8 pt-6 border-t border-gray-200">
       <%= f.submit "更新",
-          class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600" %>
+          class: "bg-blue-500 text-white px-3 md:px-6 py-2 rounded hover:bg-blue-600" %>
       <%= link_to "キャンセル", request.referer || root_path,
-          class: "px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
+          class: "px-3 md:px-6 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100" %>
     </div>
   <% end %>
 </div>

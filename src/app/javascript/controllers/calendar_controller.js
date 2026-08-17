@@ -9,6 +9,9 @@ export default class extends Controller {
     this.activeTeams = null
     this.activeUsers = null
 
+    // スマホ画面用の設定
+    const isMobile = window.innerWidth < 768
+
     this.calendar = new Calendar(this.element, {
       plugins: [dayGridPlugin, interactionPlugin],
       initialView: "dayGridMonth",
@@ -30,25 +33,34 @@ export default class extends Controller {
           `/events/new?date=${info.dateStr}`
       },
 
-      height: "auto", 
-      expandRows: false,   
-      fixedWeekCount: false, 
-      dayMaxEventRows: 3
+      height: "auto",
+      expandRows: false,
+      fixedWeekCount: false,
+      dayMaxEventRows: isMobile ? 2 : 3,
     })
 
-    this.calendar.render() 
+    this.calendar.render()
 
     requestAnimationFrame(() => this.applyRowHeight())
 
-    this.calendar.on('datesSet', () => {
+    this.calendar.on("datesSet", () => {
       requestAnimationFrame(() => this.applyRowHeight())
+    })
+
+    window.addEventListener("resize", () => {
+      this.applyRowHeight()
     })
   }
 
   applyRowHeight() {
-    this.element.querySelectorAll('.fc-daygrid-body tr').forEach(tr => {
-       tr.style.height = '120px'
-    })
+    const isMobile = window.innerWidth < 768
+    const rowHeight = isMobile ? "70px" : "120px"
+
+    this.element
+      .querySelectorAll(".fc-daygrid-body tr")
+      .forEach((tr) => {
+        tr.style.height = rowHeight
+      })
   }
 
   filter(event) {
@@ -69,11 +81,19 @@ export default class extends Controller {
 
       const filtered = events.filter(event => {
 
-        if (this.activeTeams && event.team_id && !this.activeTeams.includes(event.team_id)) {
+        if (
+          this.activeTeams &&
+          event.team_id &&
+          !this.activeTeams.includes(event.team_id)
+        ) {
           return false
         }
 
-        if (this.activeUsers && event.user_id && !this.activeUsers.includes(event.user_id)) {
+        if (
+          this.activeUsers &&
+          event.user_id &&
+          !this.activeUsers.includes(event.user_id)
+        ) {
           return false
         }
 
