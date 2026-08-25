@@ -45,26 +45,51 @@ TeamMember.find_or_create_by!(user: suzuki, team: inside_sales)
 TeamMember.find_or_create_by!(user: takahashi, team: field_sales)
 TeamMember.find_or_create_by!(user: yamada, team: customer_success)
 
+# サンプルデータ用の日付
+base_date = Date.current
+
 # 個人の予定の作成
 Event.create!(
   title: "訪問説明",
   user: tanaka,
-  start_time: Time.zone.now + 2.hours,
-  end_time: Time.zone.now + 3.hours
+  start_time: base_date + 1.days + 10.hours,
+  end_time: base_date + 1.days + 11.hours
 )
 
 Event.create!(
   title: "新商材の資料作成",
   user: sato,
-  start_time: Time.zone.now + 1.day,
-  end_time: Time.zone.now + 1.day + 1.hour
+  start_time: base_date + 2.days + 13.hours,
+  end_time: base_date + 2.days + 14.hours
 )
 
 Event.create!(
   title: "オンライン説明",
   user: suzuki,
-  start_time: Time.zone.now + 3.hours,
-  end_time: Time.zone.now + 4.hours
+  start_time: base_date + 3.days + 15.hours,
+  end_time: base_date + 3.days + 16.hours
+)
+
+Event.create!(
+  title: "1on1",
+  user: tanaka,
+  start_time: base_date + 4.days + 15.hours,
+  end_time: base_date + 4.days + 16.hours
+)
+
+Event.create!(
+  title: "オンライン説明",
+  user: sato,
+  start_time: base_date + 5.days + 15.hours,
+  end_time: base_date + 5.days + 16.hours
+)
+
+Event.create!(
+  title: "社内研修",
+  user: tanaka,
+  start_time: base_date + 7.days,
+  end_time: base_date + 8.days,
+  all_day: true
 )
 
 
@@ -73,23 +98,63 @@ Event.create!(
   title: "新商材のインプット会議",
   user: tanaka,
   team: inside_sales,
-  start_time: Time.zone.now + 1.day,
-  end_time: Time.zone.now + 1.day + 2.hours
+  start_time: base_date + 4.days + 10.hours,
+  end_time: base_date + 4.days + 11.hours
 )
 
 Event.create!(
   title: "セミナーイベント開催",
   user: sato,
   team: field_sales,
-  start_time: Time.zone.now + 2.days,
-  end_time: Time.zone.now + 2.days + 1.hour
+  start_time: base_date + 2.days + 10.hours,
+  end_time: base_date + 2.days + 11.hours
 )
 
 Event.create!(
-  title: "定例会議",
+  title: "新施策の会議",
   user: yamada,
   team: customer_success,
-  start_time: Time.zone.now + 3.days,
-  end_time: Time.zone.now + 3.days + 1.hour
+  start_time: base_date + 1.days + 10.hours,
+  end_time: base_date + 1.days + 11.hours,
+)
+
+Event.create!(
+  title: "キャンペーン開始",
+  user: tanaka,
+  team: field_sales,
+  start_time: base_date + 6.days,
+  end_time: base_date + 7.days,
+  all_day: true
+)
+
+Event.create!(
+  title: "新商材のインプット会議",
+  user: sato,
+  team: customer_success,
+  start_time: base_date + 1.days + 14.hours,
+  end_time: base_date + 1.days + 15.hours
+)
+
+Event.create!(
+  title: "WEB広告",
+  user: tanaka,
+  team: inside_sales,
+  start_time: base_date + 7.days,
+  end_time: base_date + 17.days,
+  all_day: true
+)
+
+# 繰り返し予定の作成
+repeat_start = base_date.next_occurring(:monday).to_time.change(hour: 10)
+schedule = IceCube::Schedule.new(repeat_start)
+schedule.add_recurrence_rule(IceCube::Rule.weekly)
+
+Event.create!(
+  title: "インサイドセールス定例",
+  user: tanaka,
+  team: inside_sales,
+  start_time: repeat_start,
+  end_time: repeat_start + 1.hour,
+  repeat_rule: schedule.to_yaml
 )
 
