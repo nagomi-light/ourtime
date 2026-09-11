@@ -272,6 +272,7 @@ CI/CDの構築は初めてだったため、ワークフローの仕組みや設
 - Docker Compose
 
 ## セットアップ
+```bash
 git clone https://github.com/nagomi-light/ourtime.git
 cd ourtime
 
@@ -282,6 +283,7 @@ docker compose exec ourtime_web bundle install
 docker compose exec ourtime_web rails db:create
 docker compose exec ourtime_web rails db:migrate
 docker compose exec ourtime_web rails db:seed
+```
 
 ## テスト 
 docker compose exec ourtime_web bundle exec rspec
