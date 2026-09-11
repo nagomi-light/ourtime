@@ -15,10 +15,13 @@ OUR TIMEは個人やチームの予定を一元管理するためのスケジュ
 https://ourtime.onrender.com/
 
 ## テストアカウント 
-一般ユーザー
+**一般ユーザー**
+
 - メールアドレス：`sato@example.com`
 - パスワード：`password`
-管理者
+
+**管理者**
+
 - メールアドレス：`tanaka@example.com`
 - パスワード：`password`
 
