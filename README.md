@@ -168,45 +168,99 @@ Action Mailerと組み合わせることで、招待メールなどを実際に�
 ### ホーム画面
 カレンダー形式で同じチームメンバーの予定を確認できます。  
 サイドバーのチェックボックスをクリックすると、どのユーザー、チームの予定を表示するか変更できます。  
-![ホーム画面](docs/images/home.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/home.png">
+    </td>
+  </tr>
+</table>
 
 ### 予定作成・編集画面
 個人予定・チーム予定の作成、繰り返し予定の作成ができます。  
-![予定作成・編集画面](docs/images/event-form.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/event-form.png">
+    </td>
+  </tr>
+</table>
 
 ### 予定詳細画面
 予定の詳細を確認できます。  
 自分が作成した予定の場合のみ、編集ボタンと削除ボタンが表示されます。  
-![予定詳細画面](docs/images/event-show.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/event-show.png">
+    </td>
+  </tr>
+</table>
 
 ### チーム管理画面
 管理者権限のあるユーザーのみアクセス可能です。  
 チームの一覧を確認できます。  
-![チーム管理画面](docs/images/team-management.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/team-management.png">
+    </td>
+  </tr>
+</table>
 
 ### チーム作成・編集画面
 管理者権限のあるユーザーのみアクセス可能です。  
 新規チームの作成、既存チームの編集ができます。  
-![チーム作成・編集画面](docs/images/team-form.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/team-form.png">
+    </td>
+  </tr>
+</table>
 
 ### ユーザー管理画面
 管理者権限のあるユーザーのみアクセス可能です。  
 ユーザーの一覧を確認できます。  
-![ユーザー管理画面](docs/images/user-management.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/user-management.png">
+    </td>
+  </tr>
+</table>
 
 ### ユーザー招待・編集画面
 管理者権限のあるユーザーのみアクセス可能です。  
 新規ユーザーの招待、既存ユーザーの編集ができます。  
 新規ユーザーを招待した場合、登録メールアドレス宛に招待メールが送付されます。  
-![ユーザー招待・編集画面](docs/images/user-form.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/user-form.png">
+    </td>
+  </tr>
+</table>
 
 ### パスワード設定画面
 招待を受けた新規ユーザーがパスワードを設定するための画面です。  
-![パスワード設定画面](docs/images/password-setup.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/password-setup.png">
+    </td>
+  </tr>
+</table>
 
 ### パスワード変更画面
 既存ユーザーがパスワードを変更するための画面です。  
-![パスワード変更画面](docs/images/password-change.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/password-change.png">
+    </td>
+  </tr>
+</table>
 
 ## 工夫した点 
 
