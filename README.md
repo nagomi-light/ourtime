@@ -171,7 +171,7 @@ Action Mailerと組み合わせることで、招待メールなどを実際に�
 <table>
   <tr>
     <td bgcolor="#f3f4f6" align="center">
-      <img src="docs/images/home.png">
+      <img src="docs/images/home.gif">
     </td>
   </tr>
 </table>
