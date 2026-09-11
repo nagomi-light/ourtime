@@ -192,7 +192,9 @@ Action Mailerと組み合わせることで、招待メールなどを実際に�
 ![ホーム画面](docs/images/home.png)
 
 ### 予定作成・編集画面
+```bash
 個人予定・チーム予定の作成、繰り返し予定の作成ができます。
+```
 ![予定作成・編集画面](docs/images/event-form.png)
 
 ### 予定詳細画面
@@ -232,12 +234,18 @@ Action Mailerと組み合わせることで、招待メールなどを実際に�
 ![ユーザー招待・編集画面](docs/images/user-form.png)
 
 ### パスワード設定画面
+```bash
 招待を受けた新規ユーザーがパスワードを設定するための画面です。
+```
 ![パスワード設定画面](docs/images/password-setup.png)
 
 ### パスワード変更画面
+```bash
 既存ユーザーがパスワードを変更するための画面です。
-![パスワード変更画面](docs/images/password-change.png)
+```
+<div style="background-color: #f3f4f6; padding: 20px;">
+  <img src="docs/images/password-change.png">
+</div>
 
 ## 工夫した点 
 
