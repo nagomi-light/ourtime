@@ -157,7 +157,13 @@ Action Mailerと組み合わせることで、招待メールなどを実際に�
 ## 画面一覧 
 
 ### ログイン画面
-![ログイン画面](docs/images/login.png)
+<table>
+  <tr>
+    <td bgcolor="#f3f4f6" align="center">
+      <img src="docs/images/login.png">
+    </td>
+  </tr>
+</table>
 
 ### ホーム画面
 カレンダー形式で同じチームメンバーの予定を確認できます。  
