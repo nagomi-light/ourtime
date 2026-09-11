@@ -17,7 +17,7 @@ https://ourtime.onrender.com/
 ## テストアカウント 
 一般ユーザー
 - メールアドレス：`sato@example.com`
-- パスワード：`password`
+- パスワード：`password`  
 管理者
 - メールアドレス：`tanaka@example.com`
 - パスワード：`password`
